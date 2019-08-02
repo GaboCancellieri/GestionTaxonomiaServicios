@@ -15,12 +15,23 @@ import { PermissionService } from './usuario/permiso.service';
 
 // PRIMENG
 import {TableModule} from 'primeng/table';
+import {ButtonModule} from 'primeng/button';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
 
 // COMPONENTES
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from './usuario/user.service';
 import { EstandaresComponent } from './estandares/estandares.component';
+import { DominiosComponent } from './dominios/dominios.component';
+import { ServiciosComponent } from './servicios/servicios.component';
+
+// SERVICIOS
+import { EstandarService } from './estandares/estandar.service';
+import { DominioService } from './dominios/dominio.service';
+import { ServicioService } from './servicios/servicio.service';
+import { UsuariosComponent } from './usuario/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -29,14 +40,21 @@ import { EstandaresComponent } from './estandares/estandares.component';
     HeaderComponent,
     LoginComponent,
     InicioComponent,
-    EstandaresComponent
+    EstandaresComponent,
+    DominiosComponent,
+    ServiciosComponent,
+    UsuariosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpModule,
-    TableModule
+    TableModule,
+    ButtonModule,
+    MessagesModule,
+    MessageModule
+
   ],
   providers: [
     AuthGuard,
@@ -44,7 +62,10 @@ import { EstandaresComponent } from './estandares/estandares.component';
     UrlService,
     WINDOW_PROVIDERS,
     PermissionService,
-    UsuarioService
+    UsuarioService,
+    EstandarService,
+    DominioService,
+    ServicioService,
   ],
   bootstrap: [AppComponent]
 })

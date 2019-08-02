@@ -11,6 +11,9 @@ mongoose.connect("mongodb://localhost:27017/gestion_servicios", { useNewUrlParse
 // DECLARAR ROUTES
 var usuarioRoutes = require('./routes/usuario');
 var permisoRoutes = require('./routes/permiso');
+var estandarRoutes = require('./routes/estandar');
+var dominioRoutes = require('./routes/dominio');
+var servicioRoutes = require('./routes/servicio');
 var Usuario = require('./models/usuario');
 
 express = require('express');
@@ -53,6 +56,9 @@ app.use(auth.initialize());
 // USAR ROUTES
 app.use('/usuario', usuarioRoutes);
 app.use('/permiso', permisoRoutes);
+app.use('/estandar', estandarRoutes);
+app.use('/dominio', dominioRoutes);
+app.use('/servicio', servicioRoutes);
 
 
 //#########################################################

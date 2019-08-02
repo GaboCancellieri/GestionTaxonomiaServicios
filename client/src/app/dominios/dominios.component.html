@@ -5,7 +5,7 @@
 			<ul class="page-breadcrumb">
 				<li>
 					<i class="fa fa-home"></i>
-					<a href="index.html">Home</a>
+					<a href="index.html">Inicio</a>
 					<i class="fa fa-angle-right"></i>
 				</li>
 				<li>
@@ -20,7 +20,85 @@
 
 		<!-- BEGIN BODY -->
 		<div class="row">
-
+				<div class="col-lg-6">
+						<div class="portlet light portlet-fit bordered">
+							<div class="portlet-title">
+								<div class="caption">
+									<span class="caption-subject font-dark bold uppercase">Administrar Dominios</span>
+								</div>
+								<div class="actions">
+									<button class="btn btn-circle btn btn-primary pull-right" data-target="#modalAgregarEstandar" data-toggle="modal">
+										<i class="fas fa-plus"></i>
+										Agregar
+									</button>
+								</div>
+							</div>
+							<div class="portlet-body">
+								<p-table [columns]="cols" [value]="dominios" [paginator]="true" [rows]="12"
+									selectionMode="single" [(selection)]="selectedEstandar" dataKey="_id" #dt>
+									<ng-template pTemplate="header" let-columns>
+										<tr>
+											<th *ngFor="let col of columns" [pSortableColumn]="col.field">
+												{{col.header}}
+												<p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+													ariaLabelDesc="Activate to sort in descending order"
+													ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+											</th>
+										</tr>
+										<tr>
+											<th *ngFor="let col of columns" [ngSwitch]="col.field">
+												<input *ngSwitchCase="'nombre'" class="form-control" type="text"
+													[(ngModel)]="model.filtroNombre" name="filtroNombre" #filtroNombre="ngModel"
+													(ngModelChange)="filtrarNombre(filtroNombre.value); reiniciarTabla();"
+													style="width:100%" style="width:100%">
+												<input *ngSwitchCase="'detalle'" class="form-control" type="text"
+													[(ngModel)]="model.filtroDetalle" name="filtroNumero"
+													#filtroDetalle="ngModel"
+													(ngModelChange)="filtrarDetalle(filtroDetalle.value); reiniciarTabla();"
+													style="width:100%">
+											</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-rowData let-columns="columns">
+										<tr [pSelectableRow]="rowData">
+											<td *ngFor="let col of columns">
+												{{rowData[col.field]}}
+											</td>
+										</tr>
+									</ng-template>
+									<ng-template *ngIf="dominios.length == 0" pTemplate="footer">
+										<tr class="ui-widget-header">
+											<td colspan="2">
+												<span style="font-weight:bold">No hay registros</span>
+											</td>
+										</tr>
+									</ng-template>
+								</p-table>
+								&nbsp;
+								<div class="clearfix">
+									<p>
+										<button class="btn btn-circle btn btn-danger pull-right" *ngIf="!selectedEstandar" disabled>
+											<i class="fas fa-times"></i>
+											Eliminar
+										</button>
+										<button class="btn btn-circle btn btn-danger pull-right" *ngIf="selectedEstandar">
+											<i class="fas fa-times"></i>
+											Eliminar
+										</button>
+		
+										<button class="btn btn-circle btn btn-warning pull-right" *ngIf="!selectedEstandar" disabled>
+											<i class="fas fa-pencil-alt"></i>
+											Editar
+										</button>
+										<button class="btn btn-circle btn btn-warning pull-right" *ngIf="selectedEstandar">
+											<i class="fas fa-pencil-alt"></i>
+											Editar
+										</button>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 		</div>
 	</div>
 </div>

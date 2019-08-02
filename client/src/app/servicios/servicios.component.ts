@@ -1,30 +1,30 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import Swal from 'sweetalert2';
-import { Estandar } from './estandar';
-import { EstandarService } from './estandar.service';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Servicio } from './servicio';
 import { NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { ServicioService } from './servicio.service';
 
 @Component({
-  selector: 'app-estandares',
-  templateUrl: './estandares.component.html'
+  selector: 'app-domninios',
+  templateUrl: './servicios.component.html'
 })
-export class EstandaresComponent implements OnInit{
+export class ServiciosComponent implements OnInit {
   @ViewChild('cerrarAgregar', { static: true }) cerrarAgregar: ElementRef;
   @ViewChild('cerrarEditar', { static: true }) cerrarEditar: ElementRef;
 
 
     model: any = {};
     cols: any;
-    estandares: Estandar[] = [];
-    auxEstandares: Estandar[];
-    selectedEstandar: Estandar;
+    servicios: Servicio[] = [];
+    auxServicios: Servicio[];
+    selectedServicio: Servicio;
 
     constructor(
-        private estandarService: EstandarService
+        private servicioService: ServicioService
     ) { }
 
     ngOnInit() {
-        this.getEstandares();
+        this.getServicios();
         this.cols = [
             { field: 'nombre', header: 'Nombre' },
             { field: 'detalle', header: 'Detalle' }
@@ -34,11 +34,11 @@ export class EstandaresComponent implements OnInit{
 // ***********
 // *** GET ***
 // ***********
-    getEstandares(): void {
-        this.estandarService.getEstandares()
-        .then(estandares => {
-            this.estandares = estandares;
-            this.auxEstandares = estandares;
+    getServicios(): void {
+        this.servicioService.getServicios()
+        .then(servicios => {
+            this.servicios = servicios;
+            this.auxServicios = servicios;
         });
     }
 
@@ -46,14 +46,14 @@ export class EstandaresComponent implements OnInit{
 // ***************
 // *** AGREGAR ***
 // ***************
-agregarEstandar(f: NgForm): void {
-    this.estandarService.postEstandar(this.model.nombre, this.model.detalle)
-    .then(estandarGuardada => {
+agregarServicio(f: NgForm): void {
+    this.servicioService.postServicio(this.model.nombre, this.model.detalle)
+    .then(servicioGuardada => {
         // Cerrar Modal
         this.cerrarAgregar.nativeElement.click();
 
         // Agregamos el elemento
-        this.estandares.push(estandarGuardada);
+        this.servicios.push(servicioGuardada);
 
         // Mensaje de Éxito
         Swal.fire({
@@ -73,11 +73,11 @@ agregarEstandar(f: NgForm): void {
 // ******************
 // *** ACTUALIZAR ***
 // ******************
-actualizarEstandar(): void {
-    this.estandarService
-        .patchEstandar(this.selectedEstandar._id,
-            this.selectedEstandar.nombre,
-            this.selectedEstandar.detalle)
+actualizarServicio(): void {
+    this.servicioService
+        .patchServicio(this.selectedServicio._id,
+            this.selectedServicio.nombre,
+            '')
         .then(contratoActualizado => {
             // Cerrar Modal
             this.cerrarEditar.nativeElement.click();
@@ -91,14 +91,14 @@ actualizarEstandar(): void {
                 timer: 1200
             });
 
-            this.selectedEstandar = null;
+            this.selectedServicio = null;
         });
 }
 
 // ****************
 // *** ELIMINAR ***
 // ****************
-eliminarEstandar() {
+eliminarServicio() {
     Swal.fire({
         title: 'Seguro?',
         text: 'Los cambios no se podrán revertir!',
@@ -109,8 +109,8 @@ eliminarEstandar() {
         confirmButtonText: 'Eliminar!'
     }).then((result) => {
         if (result.value) {
-            this.estandarService.deleteEstandar(this.selectedEstandar._id)
-                .then(estandarEliminada => {
+            this.servicioService.deleteServicio(this.selectedServicio._id)
+                .then(servicioEliminada => {
                     // Mensaje de Exito
                     Swal.fire(
                         'Eliminada!',
@@ -120,12 +120,12 @@ eliminarEstandar() {
 
                     // Eliminamos el elemento del arreglo
                     let i: number;
-                    this.estandares.forEach((elem, index) => {
-                        if (elem._id === estandarEliminada._id) {
+                    this.servicios.forEach((elem, index) => {
+                        if (elem._id === servicioEliminada._id) {
                             i = index;
                         }
                     });
-                    this.estandares.splice(i, 1);
+                    this.servicios.splice(i, 1);
                 });
         }
     });
@@ -136,17 +136,17 @@ eliminarEstandar() {
 // *************
 reiniciarTabla() {
     if (!this.model.filtroNombre && !this.model.filtroDetalle) {
-      this.estandares = this.auxEstandares;
+      this.servicios = this.auxServicios;
     }
   }
 
   filtrarNombre(nombre: string) {
-    this.estandares = this.estandares.filter(estandar => estandar.nombre !== undefined);
-    this.estandares = this.estandares.filter(estandar => estandar.nombre.toLowerCase().includes(nombre.toLowerCase()));
+    this.servicios = this.servicios.filter(servicio => servicio.nombre !== undefined);
+    this.servicios = this.servicios.filter(servicio => servicio.nombre.toLowerCase().includes(nombre.toLowerCase()));
   }
 
   filtrarDetalle(detalle: string) {
-    this.estandares = this.estandares.filter(estandar => estandar.nombre !== undefined);
-    this.estandares = this.estandares.filter(estandar => estandar.nombre.toLowerCase().includes(detalle.toLowerCase()));
+    this.servicios = this.servicios.filter(servicio => servicio.nombre !== undefined);
+    this.servicios = this.servicios.filter(servicio => servicio.nombre.toLowerCase().includes(detalle.toLowerCase()));
   }
 }
