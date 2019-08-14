@@ -36,9 +36,6 @@ function getUsuario(req,res){
                 error: 'Usuario no encontrado'
             });
         }
-
-        console.log(usr)
-
         usr.password="********";
         res.status(200).json({
             message: 'Success',

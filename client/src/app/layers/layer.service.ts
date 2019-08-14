@@ -17,7 +17,7 @@ export class LayerService {
     ) { }
     // me conecto a la base de datos
     getLayers(estado: string): Promise<Layer[]> {
-        return this.http.get(this.layerURL + '/' + estado)
+        return this.http.get(this.layerURL)
             .toPromise()
             .then(response => response.json().obj as Layer[]) // coneccion con exito
             .catch(this.handleError); // obtento el error en caso de que se produzca uno

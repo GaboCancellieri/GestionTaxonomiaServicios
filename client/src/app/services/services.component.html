@@ -12,7 +12,7 @@
                             <h6 style="text-decoration: none;color: #333;">
                                 <strong style="text-decoration: none;color: #333;">Service administration
                                     <button pButton class="ui-button-rounded float-right" label="New Service"
-                                        icon="fas fa-plus" data-toggle="modal" data-target="#modalAgregarMedico">
+                                        icon="fas fa-plus" data-toggle="modal" data-target="#modalAddService">
                                     </button>
                                 </strong>
                             </h6>
@@ -34,73 +34,74 @@
 <!-- ============================================================== -->
 <!-- MODAL AGREGAR -->
 <!-- ============================================================== -->
-<div class="modal fade" id="modalAgregarMedico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalAddService" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo Medico</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarAgregar>
+                <h5 class="modal-title" id="exampleModalLabel">New Service  </h5>
+                <i class="fas fa-sitemap" style="margin-left: 2%"></i>                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAdd>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form (ngSubmit)="f.form.valid 
-                && model.dniMedico && model.nombreMedico
-                && model.apellidoMedico && model.telefonoMedico
-                && model.matriculaMedico && model.especialidadMedico
+                && model.dniService && model.nombreService
+                && model.apellidoService && model.telefonoService
+                && model.matriculaService && model.especialidadService
                 
-                && cargarMedico(f);" #f="ngForm" novalidate>
+                && cargarService(f);" #f="ngForm" novalidate>
                 <div class="modal-body">
 
                     <div class="form-group required">
-                        <label class="control-label" for="dniMedico">DNI:</label>
-                        <input type="text" class="form-control" name="dniMedico" [(ngModel)]="model.dniMedico"
-                            #dniMedico="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.dniMedico" severity="error" text="Campo Obligatorio.">
+                        <label class="control-label" for="dniService">DNI:</label>
+                        <input type="text" class="form-control" name="dniService" [(ngModel)]="model.dniService"
+                            #dniService="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.dniService" severity="error" text="Campo Obligatorio.">
                         </p-message>
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="nombreMedico">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreMedico" [(ngModel)]="model.nombreMedico"
-                            #nombreMedico="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.nombreMedico" severity="error"
+                        <label class="control-label" for="nombreService">Nombre:</label>
+                        <input type="text" class="form-control" name="nombreService" [(ngModel)]="model.nombreService"
+                            #nombreService="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.nombreService" severity="error"
                             text="Campo Obligatorio."></p-message>
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="apellidoMedico">Apellido:</label>
-                        <input type="text" class="form-control" name="apellidoMedico" [(ngModel)]="model.apellidoMedico"
-                            #apellidoMedico="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.apellidoMedico" severity="error"
+                        <label class="control-label" for="apellidoService">Apellido:</label>
+                        <input type="text" class="form-control" name="apellidoService" [(ngModel)]="model.apellidoService"
+                            #apellidoService="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.apellidoService" severity="error"
                             text="Campo Obligatorio."></p-message>
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="telefonoMedico">Telefono:</label>
-                        <input type="text" class="form-control" name="telefonoMedico" [(ngModel)]="model.telefonoMedico"
-                            #telefonoMedico="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.telefonoMedico" severity="error"
+                        <label class="control-label" for="telefonoService">Telefono:</label>
+                        <input type="text" class="form-control" name="telefonoService" [(ngModel)]="model.telefonoService"
+                            #telefonoService="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.telefonoService" severity="error"
                             text="Campo Obligatorio."></p-message>
 
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="matriculaMedico">Matricula:</label>
-                        <input type="text" class="form-control" name="matriculaMedico"
-                            [(ngModel)]="model.matriculaMedico" #matriculaMedico="ngModel" autocomplete="off"
+                        <label class="control-label" for="matriculaService">Matricula:</label>
+                        <input type="text" class="form-control" name="matriculaService"
+                            [(ngModel)]="model.matriculaService" #matriculaService="ngModel" autocomplete="off"
                             required />
-                        <p-message *ngIf="f.submitted && !model.matriculaMedico" severity="error"
+                        <p-message *ngIf="f.submitted && !model.matriculaService" severity="error"
                             text="Campo Obligatorio."></p-message>
 
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="especialidadMedico">Especialidad:</label>
-                        <input type="text" class="form-control" name="especialidadMedico"
-                            [(ngModel)]="model.especialidadMedico" #especialidadMedico="ngModel" autocomplete="off"
+                        <label class="control-label" for="especialidadService">Especialidad:</label>
+                        <input type="text" class="form-control" name="especialidadService"
+                            [(ngModel)]="model.especialidadService" #especialidadService="ngModel" autocomplete="off"
                             required />
-                        <p-message *ngIf="f.submitted && !model.especialidadMedico" severity="error"
+                        <p-message *ngIf="f.submitted && !model.especialidadService" severity="error"
                             text="Campo Obligatorio."></p-message>
 
                     </div>

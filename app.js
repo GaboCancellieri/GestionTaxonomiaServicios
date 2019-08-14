@@ -6,21 +6,15 @@ const http = require('http'),
 var mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect("mongodb://localhost:27017/super_logi", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/serv_taxo_manage", { useNewUrlParser: true });
 
 // DECLARAR ROUTES
 var usuarioRoutes = require('./routes/usuario');
 var permisoRoutes = require('./routes/permiso');
-var medicoRoutes = require('./routes/medico');
-var obraRoutes = require('./routes/obra');
-var medicamentoRoutes=require('./routes/medicamento');
-var pacienteRoutes=require('./routes/paciente');
-var repartidorRoutes=require('./routes/repartidor'); 
-var pedidoRoutes=require('./routes/pedido');
-var farmaciaRoutes=require('./routes/farmacia');
-var clinicaRoutes=require('./routes/clinica');
-var historialPacienteRoutes=require('./routes/historial_paciente');
-var historialPedidosRoutes=require('./routes/historial_pedidos');
+var serviceRoutes = require('./routes/service');
+var standardRoutes=require('./routes/standard');
+var domainRoutes=require('./routes/domain');
+var layerRoutes=require('./routes/layer');
 
 var Usuario = require('./models/usuario');
 
@@ -64,16 +58,10 @@ app.use(auth.initialize());
 // USAR ROUTES
 app.use('/usuario', usuarioRoutes);
 app.use('/permiso', permisoRoutes);
-app.use('/medico', medicoRoutes);
-app.use('/obra', obraRoutes);
-app.use('/medicamento', medicamentoRoutes);
-app.use('/paciente', pacienteRoutes);
-app.use('/repartidor', repartidorRoutes);
-app.use('/pedido', pedidoRoutes);
-app.use('/farmacia', farmaciaRoutes);
-app.use('/clinica', clinicaRoutes);
-app.use('/historial_paciente',historialPacienteRoutes);
-app.use('/historial_pedidos',historialPedidosRoutes);
+app.use('/service', serviceRoutes);
+app.use('/standard', standardRoutes);
+app.use('/domain', domainRoutes);
+app.use('/layer', layerRoutes);
 
 
 //#########################################################

@@ -3,7 +3,7 @@ import { routerTransition } from '../router.animations';
 import { Service } from './service';
 import { ServiceService } from './services.service';
 import { NgForm } from '@angular/forms';
-import {TreeNode} from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 
 import Swal from 'sweetalert2';
 
@@ -17,6 +17,7 @@ export class ServiceComponent implements OnInit {
 
   model: any = {};
   services: Service[];
+  serviceTree: TreeNode[];
   cols: any[];
   selectedService: Service;
 
@@ -40,6 +41,10 @@ export class ServiceComponent implements OnInit {
     this.serviceService.getServices()
       .then(services => {
         this.services = services;
+        this.makeServiceTree(services)
+        .then(serviceTree => {
+          this.serviceTree = serviceTree;
+        });
       });
   }
 
@@ -68,6 +73,38 @@ export class ServiceComponent implements OnInit {
         // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
         f.resetForm();
       });
+  }
+
+  // ***************
+  // **** OTHER ****
+  // ***************
+  async makeServiceTree(services: Service[]): Promise<TreeNode[]> {
+    if (services && services.length !== 0) {
+      const serviceTree = [];
+      for (const service of services) {
+        const children = await this.makeServiceTree(service.services);
+        const layerName = this.getInitials(service.layer.name);
+        const serviceNode = {
+          label: layerName + ': ' + service.name,
+          data: service._id,
+          expandedIcon: 'fas fa-folder-open',
+          collpasedIcon: 'fas fa-folder',
+          children
+        };
+        serviceTree.push(serviceNode);
+      }
+      return serviceTree;
+    }
+  }
+
+  getInitials(str: string) {
+    const names = str.split(' ');
+    let initials = names[0].substring(0, 1).toUpperCase();
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+    return initials;
   }
 }
 
