@@ -1,80 +1,49 @@
 <!-- ########## START: LEFT PANEL ########## -->
-<div class="br-logo"><a href=""><span>[</span>SUPER LOGI<span>]</span></a></div>
+<div class="br-logo"><a href=""><span>[</span>STM<span>]</span></a></div>
 <div class="br-sideleft overflow-y-auto">
     <label class="sidebar-label pd-x-15 mg-t-20">Menu</label>
     <div class="br-sideleft-menu">
 
-
-        <a routerLink="/inicio" [routerLinkActive]="['router-link-active']" class="br-menu-link">
+        <a routerLink="/home" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
                 <i class="fas fa-home fa-fw"></i>
-                <span class="menu-item-label">Inicio</span>
+                <span class="menu-item-label">Home</span>
             </div>
         </a>
 
 
-        <a [routerLink]="['/medicos']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
+        <a [routerLink]="['/services']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
-                <i class="fas fa-user-md"></i>
-                <span class="menu-item-label">Medicos</span>
+                <i class="fas fa-sitemap"></i>
+                <span class="menu-item-label">Services</span>
             </div>
         </a>
 
-        <a [routerLink]="['/pacientes']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
+        <a [routerLink]="['/domains']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
-                <i class="fas fa-user-injured"></i>
-                <span class="menu-item-label">Pacientes</span>
+                <i class="fas fa-building"></i>
+                <span class="menu-item-label">Domains</span>
             </div>
         </a>
 
-        <a [routerLink]="['/medicamentos']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
+        <a [routerLink]="['/standards']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
-                <i class="fas fa-pills"></i>
-                <span class="menu-item-label">Medicamientos</span>
+                <i class="fas fa-book"></i>
+                <span class="menu-item-label">Standards</span>
             </div>
         </a>
 
         <a [routerLink]="['/pedidos']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
-                <i class="fas fa-clipboard-list"></i>
-                <span class="menu-item-label">Pedidos</span>
-            </div>
-        </a>
-
-        <a [routerLink]="['/repartidores']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
-            <div class="br-menu-item">
-                <i class="fas fa-truck-loading"></i>
-                <span class="menu-item-label">Repartidores</span>
-            </div>
-        </a>
-
-        <a [routerLink]="['/obras']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
-            <div class="br-menu-item">
-                <i class="fas fa-id-card"></i>
-                <span class="menu-item-label">Obra Social</span>
-            </div>
-        </a>
-
-
-        <a [routerLink]="['/clinicas']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
-            <div class="br-menu-item">
-                <i class="fas fa-hospital-alt"></i>
-                <span class="menu-item-label">Clinicas</span>
-            </div>
-        </a>
-
-
-        <a [routerLink]="['/farmacias']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
-            <div class="br-menu-item">
-                <i class="fas fa-store"></i>
-                <span class="menu-item-label">Farmacia</span>
+                <i class="fas fa-layer-group"></i>
+                <span class="menu-item-label">Layers</span>
             </div>
         </a>
 
         <a [routerLink]="['/usuarios']" [routerLinkActive]="['router-link-active']" class="br-menu-link">
             <div class="br-menu-item">
                 <i class="fas fa-users"></i>
-                <span class="menu-item-label">Usuarios</span>
+                <span class="menu-item-label">Users</span>
             </div>
         </a>
     </div><!-- br-sideleft-menu -->
