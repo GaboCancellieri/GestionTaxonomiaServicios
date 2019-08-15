@@ -6,7 +6,7 @@
 
         <div class="br-pagebody pd-x-20 pd-sm-x-30">
             <div class="row row-sm">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card card-default mb-3">
                         <div class="card-header">
                             <div>
@@ -15,22 +15,14 @@
                                     <div class='pull-left'>
                                     </div>
                                 </a>
-                                <button pButton class="ui-button-rounded float-right" label="Nuevo Domain"
-                                    icon="fas fa-plus" data-toggle="modal" data-target="#modalAgregarDomain">
+                                <button pButton class="ui-button-rounded float-right" label="Add Domain"
+                                    icon="fas fa-plus" data-toggle="modal" data-target="#modalAddDomain">
                                 </button>
                             </div>
                         </div>
                         <div class="card-body">
                             <p-table #dt [columns]="cols" [value]="domains" selectionMode="single"
                                 [(selection)]="selectedDomain" [paginator]="true" [rows]="12">
-                                <ng-template pTemplate="caption">
-                                    <div style="text-align: right">
-                                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                                        <input type="text" pInputText size="50" placeholder="Filtro"
-                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                            style="width:auto">
-                                    </div>
-                                </ng-template>
                                 <ng-template pTemplate="header" let-columns>
                                     <tr>
                                         <th *ngFor="let col of columns">
@@ -39,68 +31,53 @@
                                     </tr>
                                     <tr>
                                         <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                                            <input *ngSwitchCase="'dni'" pInputText type="text"
+                                            <input *ngSwitchCase="'name'" pInputText type="text"
                                                 (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'nombre'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'apellido'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'telefono'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'direccion'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'barrio'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'fechaNacimiento'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-
                                         </th>
                                     </tr>
                                 </ng-template>
-
                                 <ng-template pTemplate="body" let-domain let-columns="columns">
                                     <tr [pSelectableRow]="domain">
                                         <td *ngFor="let col of columns">
-                                            <div *ngIf='domain[col.field] && col.field=="fechaNacimiento"'>
-                                                {{domain[col.field] | date: 'dd/MM/yyyy'}}
-                                            </div>
-                                            <div *ngIf='domain[col.field] && col.field!="fechaNacimiento"'>
-                                                {{domain[col.field]}}
-                                            </div>
-                                            
+                                            {{domain[col.field]}}                                            
                                         </td>
                                     </tr>
                                 </ng-template>
                             </p-table>
-
-
-
                         </div>
                         <div class="card-footer">
                             <div class="float-right">
-                                <!-- (deshabilitado) -->
                                 <button *ngIf="!selectedDomain"
                                     disabled
                                     pButton
-                                    label="Detalle"
-                                    icon="fas fa-search"
-                                    class="ui-button-success ui-button-raised ui-button-rounded"
+                                    label="Edit"
+                                    icon="fas fa-pencil-alt"
+                                    class="ui-button-warning ui-button-raised ui-button-rounded"
                                 >   
                                 </button>
-                                <!-- (habilitado) -->
                                 <button *ngIf="selectedDomain"
                                         pButton
-                                        label="Detalle"
-                                        icon="fas fa-search"
-                                        class="ui-button-success ui-button-raised ui-button-rounded"
-                                        [routerLink]="['/domain', selectedDomain._id]"
+                                        label="Edit"
+                                        icon="fas fa-pencil-alt"
+                                        class="ui-button-warning ui-button-raised ui-button-rounded"
+                                        data-target="#modalEditDomain" data-toggle="modal"
+                                >   
+                                </button>
+                                <button *ngIf="!selectedDomain"
+                                    disabled
+                                    pButton
+                                    label="Delete"
+                                    icon="fas fa-times"
+                                    class="ui-button-danger ui-button-raised ui-button-rounded"
+                                >   
+                                </button>
+                                <button *ngIf="selectedDomain"
+                                        pButton
+                                        label="Delete"
+                                        icon="fas fa-times"
+                                        class="ui-button-danger ui-button-raised ui-button-rounded"
+                                        (click)="deleteDomain()"
                                 >   
                                 </button>
                             </div>
@@ -115,88 +92,34 @@
 <!-- ============================================================== -->
 <!-- MODAL AGREGAR -->
 <!-- ============================================================== -->
-<div class="modal fade" id="modalAgregarDomain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalAddDomain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo Domain</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarAgregar>
+                <h5 class="modal-title" id="exampleModalLabel">Add Domain</h5>
+                <i class="fas fa-building" style="margin-left: 2%"></i>                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAdd>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form name="form"
                 (ngSubmit)="f.form.valid 
-                && model.dniDomain && model.nombreDomain
-                && model.apellidoDomain && model.telefonoDomain
-                && model.direccionDomain && model.barrioDomain
-                && model.fechaNacimientoDomain 
-                
-                && cargarDomain(f);"
+                && model.name
+                && addDomain(f);"
                 #f="ngForm" novalidate>
                 <div class="modal-body">
-
                     <div class="form-group required">
-                        <label class="control-label" for="dniDomain">DNI:</label>
-                        <input type="text" class="form-control" name="dniDomain" [(ngModel)]="model.dniDomain"
-                            #dniDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.dniDomain" severity="error" text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="nombreDomain">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreDomain" [(ngModel)]="model.nombreDomain"
-                            #nombreDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.nombreDomain" severity="error" text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="apellidoDomain">Apellido:</label>
-                        <input type="text" class="form-control" name="apellidoDomain"
-                            [(ngModel)]="model.apellidoDomain" #apellidoDomain="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !model.apellidoDomain" severity="error" text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="telefonoDomain">Telefono:</label>
-                        <input type="text" class="form-control" name="telefonoDomain"
-                            [(ngModel)]="model.telefonoDomain" #telefonoDomain="ngModel" autocomplete="off"
-                            required />
-                            <p-message *ngIf="f.submitted && !model.telefonoDomain" severity="error" text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="direccionDomain">Direccion:</label>
-                        <input type="text" class="form-control" name="direccionDomain"
-                            [(ngModel)]="model.direccionDomain" #direccionDomain="ngModel" autocomplete="off"
-                            required />
-                            <p-message *ngIf="f.submitted && !model.direccionDomain" severity="error" text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="barrioDomain">Barrio:</label>
-                        <input type="text" class="form-control" name="barrioDomain" [(ngModel)]="model.barrioDomain"
-                            #barrioDomain="ngModel" autocomplete="off" required />
-                            <p-message *ngIf="f.submitted && !model.barrioDomain" severity="error" text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="barrioDomain">Fecha de Nacimiento:</label>
-                        <input type="date" class="form-control" name="fechaNacimientoDomain"
-                            [(ngModel)]="model.fechaNacimientoDomain" #fechaNacimientoDomain="ngModel"
-                            autocomplete="off" required />
-                            <p-message *ngIf="f.submitted && !model.fechaNacimientoDomain" severity="error" text="Campo Obligatorio."></p-message>
-
+                        <label class="control-label" for="name">Name:</label>
+                        <input type="text" class="form-control" name="name" [(ngModel)]="model.name"
+                            #name="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.name" severity="error" text="Required field."></p-message>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button pButton 
                             class="ui-button-rounded ui-button-success" 
-                            label="Aceptar" 
+                            label="Submit" 
                             icon="fas fa-check" 
                             type="submit"
                     >
@@ -210,72 +133,28 @@
 <!-- ============================================================== -->
 <!-- MODAL EDITAR -->
 <!-- ============================================================== -->
-<div class="modal fade" id="modalEditarDomain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="selectedDomain">
+<div class="modal fade" id="modalEditDomain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="selectedDomain">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Domain</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarAgregar>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Domain</h5>
+                <i class="fas fa-building" style="margin-left: 2%"></i>                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeEdit>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form name="form" (ngSubmit)="f.form.valid 
-            && selectedDomain.nombre && selectedDomain.apellido
-            && selectedDomain.telefono && selectedDomain.direccion
-            && selectedDomain.barrio && selectedDomain.fechaNacimiento
-            && editarDomain(f);" #f="ngForm" novalidate>
+            && selectedDomain.name && editDomain(f);" #f="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="idDomain">DNI:</label>
-                        <input type="text" class="form-control" name="idDomain" [(ngModel)]="selectedDomain.dni"
-                            #idDomain="ngModel" disabled />
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="nombreDomain">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreDomain" [(ngModel)]="selectedDomain.nombre"
-                            #nombreDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedDomain.nombre" severity="error" text="Campo no puede quedar vacío."></p-message>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="apellidoDomain">Apellido:</label>
-                        <input type="text" class="form-control" name="apellidoDomain" [(ngModel)]="selectedDomain.apellido"
-                            #apellidoDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedDomain.apellido" severity="error" text="Campo no puede quedar vacío."></p-message>
-                    </div>
-            
-                    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !telefonoDomain.valid }">
-                        <label for="telefonoDomain">Telefono:</label>
-                        <input type="text" class="form-control" name="telefonoDomain" [(ngModel)]="selectedDomain.telefono"
-                            #telefonoDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedDomain.telefono" severity="error" text="Campo no puede quedar vacío."></p-message>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="direccionDomain">Direccion:</label>
-                        <input type="text" class="form-control" name="direccionDomain" [(ngModel)]="selectedDomain.direccion"
-                            #direccionDomain="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedDomain.direccion" severity="error" text="Campo no puede quedar vacío."></p-message>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="barrioDomain">Barrio:</label>
-                        <input type="text" class="form-control" name="barrioDomain" [(ngModel)]="selectedDomain.barrio"
-                            #barrioDomain="ngModel" autocomplete="off" required />
-                            <p-message *ngIf="f.submitted && !selectedDomain.barrio" severity="error" text="Campo no puede quedar vacío."></p-message>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="fechaNacimientoDomain">Fecha de Nacimiento:</label>
-                        <input type="text" class="form-control" name="fechaNacimientoDomain" value="{{selectedDomain.fechaNacimiento | date: 'dd/MM/yyyy'}}" disabled />
-                        <p-message *ngIf="f.submitted && !selectedDomain.fechaNacimiento" severity="error" text="Campo no puede quedar vacío."></p-message>
-
+                        <label for="nombreDomain">Name:</label>
+                        <input type="text" class="form-control" name="nameDomain" [(ngModel)]="selectedDomain.name"
+                            #nameDomain="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !selectedDomain.name" severity="error" text="Required field."></p-message>
                     </div>
                 </div>
                 <div class="modal-footer">
-                        <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
-                        type="submit" (click)="cerrarModalEditar()">
+                    <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check" type="submit">
                     </button>
                 </div>
             </form>

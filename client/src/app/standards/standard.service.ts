@@ -4,10 +4,12 @@ import { UrlService } from '../window.provider.service';
 import { Standard } from './standard';
 import Swal from 'sweetalert2';
 
+
+
 @Injectable()
 export class StandardService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
-    private standardURL = this.urlService.getRestApiUrl() + '/standard';  // URL a la api
+    private standardURL = this.urlService.getRestApiUrl() + '/standard';
 
     constructor(
         private http: Http,
@@ -15,66 +17,34 @@ export class StandardService {
     ) { }
 
     getStandards(): Promise<Standard[]> {
-        console.log(this.standardURL);
         return this.http.get(this.standardURL)
             .toPromise()
             .then(response => response.json().obj as Standard[])
             .catch(this.handleError);
     }
 
-    getStandardsNoConsumePaciente(idPaciente: string): Promise<Standard[]> {
-
-        return this.http.get(this.standardURL + '/noConsume' + '/' + idPaciente)
-            .toPromise()
-            .then(response => response.json().obj as Standard[])
-            .catch(this.handleError);
-    }
-
-    getStandardsNoFarmacia(idFarmacia: string): Promise<Standard[]> {
-
-        return this.http.get(this.standardURL + '/noConsumeFarmacia' + '/' + idFarmacia)
-            .toPromise()
-            .then(response => response.json().obj as Standard[])
-            .catch(this.handleError);
-    }
-
-    cargarStandard(
-        nombreMedMedicam: string,
-        dosisMedMedicam: string,
-        cadenaDeFrioMedMedicam: string,
-        laboratorioMedicam: string,
-        cantidadComprimidosMedicam: number): Promise<Standard> {
-
-        console.log('CantCompromidos:');
-        console.log(cantidadComprimidosMedicam);
-
+    addStandard(
+        name: string,
+    ): Promise<Standard> {
         return this.http.post(this.standardURL,
-            JSON.stringify({
-                nombreStandard: nombreMedMedicam,
-                dosisStandard: dosisMedMedicam, cadenaFrioStandard: cadenaDeFrioMedMedicam,
-                laboratorioStandard: laboratorioMedicam,
-                cantidadComprimidosStandard: cantidadComprimidosMedicam
-            }), { headers: this.headers })
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Standard)
             .catch(this.handleError);
     }
 
-    editarStandard(
-        idMedMedicam: string,
-        nombreMedMedicam: string): Promise<Standard> {
-        console.log('hola');
-        return this.http.patch(this.standardURL + '/' + idMedMedicam,
-            JSON.stringify({
-                idStandard: idMedMedicam, nombreStandard: nombreMedMedicam
-            }), { headers: this.headers })
+    editStandard(
+        idStandard: string,
+        name: string): Promise<Standard> {
+        return this.http.patch(this.standardURL + '/' + idStandard,
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Standard)
             .catch(this.handleError);
     }
 
-    deleteStandard(idMedMedicam: string): Promise<Standard> {
-        return this.http.delete(this.standardURL + '/' + idMedMedicam)
+    deleteStandard(idStandard: string): Promise<Standard> {
+        return this.http.delete(this.standardURL + '/' + idStandard)
             .toPromise()
             .then(response => response.json().obj as Standard)
             .catch(this.handleError);

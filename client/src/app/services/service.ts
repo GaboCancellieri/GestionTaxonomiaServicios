@@ -9,6 +9,6 @@ export class Service {
     layer: Layer;
     domain: Domain;
     standard: Standard;
-    services: [Service];
+    service: Service;
     user: Usuario;
 }

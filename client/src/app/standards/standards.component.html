@@ -1,96 +1,86 @@
 <div [@routerTransition]>
-    <div class="br-mainpanel">
-        <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
-            <h4 class="tx-gray-800 mg-b-5">Standards</h4>
-        </div>
-
-        <div class="br-pagebody pd-x-20 pd-sm-x-30">
-            <div class="row row-sm">
-                <div class="col-lg-12">
-                    <div class="card card-default mb-3">
-                        <div class="card-header">
-                            <h6 style="text-decoration: none;color: #333;">
-                            <strong style="text-decoration: none;color: #333;">Standard administration
-                                <button pButton class="ui-button-rounded float-right" label="Nuevo Standard"
-                                    icon="fas fa-plus" data-toggle="modal" data-target="#modalAgregarStandard">
-                                </button>
-                            </strong>
-                            </h6>
-                        </div>
-                        <div class="card-body">
-                            <p-table #dt [columns]="cols" [value]="standards" selectionMode="single" 
-                                [(selection)]="selectedStandard"  [paginator]="true"  [rows]="12">
-                                <ng-template pTemplate="caption">
-                                    <div style="text-align: right">
-                                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                                        <input type="text" pInputText size="50" placeholder="Filtro"
-                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                            style="width:auto">
-                                    </div>
-                                </ng-template>
-                                <ng-template pTemplate="header" let-columns>
-                                    <tr>
-                                        <th *ngFor="let col of columns">
-                                            {{col.header}}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                                            <input *ngSwitchCase="'idStandard'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'dosis'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'nombre'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'cadenaFrio'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'laboratorio'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'cantidadComprimidos'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-standard let-columns="columns">
-                                    <tr [pSelectableRow]="standard">
-                                        <td *ngFor="let col of columns">
-                                            {{standard[col.field]}}
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </div>
-                        <div class="card-footer">
-                            <div class="pull-right">
-                                <!--Boton Editar (Deshabilitado)-->
-                                <button pButton *ngIf="!selectedStandard" class="ui-button-rounded ui-button-warning"
-                                    label="Editar" icon="fas fa-pencil-alt" disabled>
-                                </button>
-
-                                <!--Boton Editar (Habilitado)-->
-                                <button pButton *ngIf="selectedStandard" class="ui-button-rounded ui-button-warning"
-                                    label="Editar" icon="fas fa-pencil-alt" data-toggle="modal" data-target="#modalEditarStandard">
-                                </button>
-
-                                &nbsp;
-
-                                <!--Boton Eliminar (Deshabilitado)-->
-                                <button pButton *ngIf="!selectedStandard" class="ui-button-rounded ui-button-danger"
-                                    label="Eliminar" icon="fas fa-times" disabled>
-                                </button>
-
-                                <!--Boton Eliminar (Habilitado)-->
-                                <button pButton *ngIf="selectedStandard" class="ui-button-rounded ui-button-danger"
-                                    label="Eliminar" icon="fas fa-times" data-toggle="modal" data-target="#"
-                                    (click)="eliminarStandard()">
-                                </button>
+        <div class="br-mainpanel">
+            <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
+                <h4 class="tx-gray-800 mg-b-5">Standards</h4>
+            </div>
+    
+            <div class="br-pagebody pd-x-20 pd-sm-x-30">
+                <div class="row row-sm">
+                    <div class="col-lg-6">
+                        <div class="card card-default mb-3">
+                            <div class="card-header">
+                                <div>
+                                    <a>
+                                        <strong style="text-decoration: none;color: #333;">Standard administration</strong>
+                                        <div class='pull-left'>
+                                        </div>
+                                    </a>
+                                    <button pButton class="ui-button-rounded float-right" label="Add Standard"
+                                        icon="fas fa-plus" data-toggle="modal" data-target="#modalAddStandard">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p-table #dt [columns]="cols" [value]="standards" selectionMode="single"
+                                    [(selection)]="selectedStandard" [paginator]="true" [rows]="12">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{col.header}}
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                                <input *ngSwitchCase="'name'" pInputText type="text"
+                                                    (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                    style="width:100%">
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-standard let-columns="columns">
+                                        <tr [pSelectableRow]="standard">
+                                            <td *ngFor="let col of columns">
+                                                {{standard[col.field]}}                                            
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <div class="card-footer">
+                                <div class="float-right">
+                                    <button *ngIf="!selectedStandard"
+                                        disabled
+                                        pButton
+                                        label="Edit"
+                                        icon="fas fa-pencil-alt"
+                                        class="ui-button-warning ui-button-raised ui-button-rounded"
+                                    >   
+                                    </button>
+                                    <button *ngIf="selectedStandard"
+                                            pButton
+                                            label="Edit"
+                                            icon="fas fa-pencil-alt"
+                                            class="ui-button-warning ui-button-raised ui-button-rounded"
+                                            data-target="#modalEditStandard" data-toggle="modal"
+                                    >   
+                                    </button>
+                                    <button *ngIf="!selectedStandard"
+                                        disabled
+                                        pButton
+                                        label="Delete"
+                                        icon="fas fa-times"
+                                        class="ui-button-danger ui-button-raised ui-button-rounded"
+                                    >   
+                                    </button>
+                                    <button *ngIf="selectedStandard"
+                                            pButton
+                                            label="Delete"
+                                            icon="fas fa-times"
+                                            class="ui-button-danger ui-button-raised ui-button-rounded"
+                                            (click)="deleteStandard()"
+                                    >   
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -98,155 +88,77 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- ============================================================== -->
-<!-- MODAL AGREGAR -->
-<!-- ============================================================== -->
-<div class="modal fade" id="modalAgregarStandard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo Standard</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarAgregar>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form (ngSubmit)="f.form.valid 
-                && model.nombreStandard
-                && model.dosisStandard && cadenaFrioStandard.options[cadenaFrioStandard.selectedIndex].value
-                && model.laboratorioStandard && model.cantidadComprimidosStandard
-                
-                && cargarStandard(cadenaFrioStandard.options[cadenaFrioStandard.selectedIndex].value, f);" #f="ngForm" novalidate autocomplete="off">
-                <div class="modal-body">
-
-                    <div class="form-group required">
-                        <label class="control-label" for="nombreStandard">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreStandard" [(ngModel)]="model.nombreStandard"
-                            #nombreStandard="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.nombreStandard" severity="error"
-                            text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="dosisStandard">Dosis:</label>
-                        <input type="text" class="form-control" name="dosisStandard" [(ngModel)]="model.dosisStandard"
-                            #dosisStandard="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.dosisStandard" severity="error"
-                            text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="cadenaFrioStandard">Cadena Frio:</label>
-                        <select class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="cadenaFrioStandard" #cadenaFrioStandard>
-                                <option selected value="No">No</option>
-                                <option value="Si">Si</option>
-                        </select>
-                        <p-message *ngIf="f.submitted && !cadenaFrioStandard.options[cadenaFrioStandard.selectedIndex].value" severity="error" text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="laboratorioStandard">Laboratorio:</label>
-                        <input type="text" class="form-control" name="laboratorioStandard"
-                            [(ngModel)]="model.laboratorioStandard" #laboratorioStandard="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !model.laboratorioStandard" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="cantidadComprimidosStandard">Cantidad Comprimidos:</label>
-                        <input type="number" class="form-control" name="cantidadComprimidosStandard"
-                            [(ngModel)]="model.cantidadComprimidosStandard" #cantidadComprimidosStandard="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !model.cantidadComprimidosStandard" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
-                        type="submit">
+    
+    <!-- ============================================================== -->
+    <!-- MODAL AGREGAR -->
+    <!-- ============================================================== -->
+    <div class="modal fade" id="modalAddStandard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Standard</h5>
+                    <i class="fas fa-book" style="margin-left: 2%"></i>                
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAdd>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            </form>
+                <form name="form"
+                    (ngSubmit)="f.form.valid 
+                    && model.name
+                    && addStandard(f);"
+                    #f="ngForm" novalidate>
+                    <div class="modal-body">
+                        <div class="form-group required">
+                            <label class="control-label" for="name">Name:</label>
+                            <input type="text" class="form-control" name="name" [(ngModel)]="model.name"
+                                #name="ngModel" autocomplete="off" required />
+                            <p-message *ngIf="f.submitted && !model.name" severity="error" text="Required field."></p-message>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button pButton 
+                                class="ui-button-rounded ui-button-success" 
+                                label="Submit" 
+                                icon="fas fa-check" 
+                                type="submit"
+                        >
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    
+    <!-- ============================================================== -->
+    <!-- MODAL EDITAR -->
+    <!-- ============================================================== -->
+    <div class="modal fade" id="modalEditStandard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="selectedStandard">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Standard</h5>
+                    <i class="fas fa-book" style="margin-left: 2%"></i>                
 
-<!-- ============================================================== -->
-<!-- MODAL EDITAR -->
-<!-- ============================================================== -->
-<div class="modal fade" id="modalEditarStandard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" *ngIf="selectedStandard"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Standard</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarEditar>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form (ngSubmit)="f.form.valid 
-                && selectedStandard.nombre
-                && selectedStandard.dosis && cadenaFrioMed.options[cadenaFrioMed.selectedIndex].value
-                && selectedStandard.laboratorio && selectedStandard.cantidadComprimidos
-                
-                && editarStandard(cadenaFrioMed.options[cadenaFrioMed.selectedIndex].value, f);" #f="ngForm" novalidate autocomplete="off">
-                <div class="modal-body">
-
-                    <div class="form-group required">
-                        <label class="control-label" for="nombreStandard">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreStandard" [(ngModel)]="selectedStandard.nombre"
-                            #nombreStandard="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedStandard.nombre" severity="error"
-                            text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="dosisStandard">Dosis:</label>
-                        <input type="text" class="form-control" name="dosisStandard" [(ngModel)]="selectedStandard.dosis"
-                            #dosisStandard="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !selectedStandard.dosis" severity="error"
-                            text="Campo Obligatorio."></p-message>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="cadenaFrioStandard">Cadena Frio:</label>
-                        <select class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="cadenaFrioMed" #cadenaFrioMed>
-                                <option selected value="No">No</option>
-                                <option value="Si">Si</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="laboratorioStandard">Laboratorio:</label>
-                        <input type="text" class="form-control" name="laboratorioStandard"
-                            [(ngModel)]="selectedStandard.laboratorio" #laboratorioStandard="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !selectedStandard.laboratorio" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="cantidadComprimidosStandard">Cantidad Comprimidos:</label>
-                        <input type="number" class="form-control" name="cantidadComprimidosStandard"
-                            [(ngModel)]="selectedStandard.cantidadComprimidos" #cantidadComprimidosStandard="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !selectedStandard.cantidadComprimidos" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
-                        type="submit">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeEdit>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            </form>
+                <form name="form" (ngSubmit)="f.form.valid 
+                && selectedStandard.name && editStandard(f);" #f="ngForm" novalidate>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nombreStandard">Name:</label>
+                            <input type="text" class="form-control" name="nameStandard" [(ngModel)]="selectedStandard.name"
+                                #nameStandard="ngModel" autocomplete="off" required />
+                            <p-message *ngIf="f.submitted && !selectedStandard.name" severity="error" text="Required field."></p-message>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check" type="submit">
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>

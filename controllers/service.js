@@ -2,7 +2,7 @@
 
 var Service = require('../models/service');
 
-// FUNCIONES
+// FUNCTIONS
 function getServices(req, res){
     Service.find({}, function (err, services) {
         if (err) {
@@ -44,6 +44,45 @@ function getService(req, res){
         res.status(200).json({
             message: 'Success',
             obj: service
+        });
+    });
+}
+
+function getServiceTree(req, res){
+    Service.find({})
+    .populate('domain')
+    .exec(function (err, services) {
+        if (err) {
+            return res.status(400).json({
+                title: 'Error',
+                error: err
+            });
+        }
+
+        let serviceTree = [];
+        for (const service of services) {
+            const serviceNode = {
+                label: service.domain.name + ': ' + service.name,
+                data: service._id,
+                expandedIcon: 'fa fa-folder-open',
+                collapsedIcon: 'fa fa-folder',
+                children: []
+            }
+            if (!service.service) {
+                serviceTree.push(serviceNode)
+            }
+            else {
+                for (const srvNode of serviceTree) {
+                    if (srvNode.data.equals(service.service)) {
+                        srvNode.children.push(serviceNode);
+                    }
+                }
+            }
+        }
+
+        res.status(200).json({
+            message: 'Success',
+            obj: serviceTree
         });
     });
 }
@@ -103,10 +142,10 @@ function postService(req, res) {
 
     }, function (err) {
         if (err.code == 11000) {
-            var msj = ""
+            var msj = ''
             //Catching index name inside errmsg reported by mongo to determine the correct error and showing propper message
-            if (err.errmsg.toString().includes("dni"))
-                msj = "Dni de Service";
+            if (err.errmsg.toString().includes('dni'))
+                msj = 'Dni de Service';
            
             return res.status(404).json({
                 title: 'Error',
@@ -184,6 +223,7 @@ function deleteService(req, res){
 module.exports = {
     getServices,
     getService,
+    getServiceTree,
     postService,
     patchService,
     deleteService,

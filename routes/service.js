@@ -7,6 +7,7 @@ var ServiceController = require('../controllers/service');
 // GETS
 api.get('/',ServiceController.getServices);
 api.get('/:idService',ServiceController.getService);
+api.get('/service/tree',ServiceController.getServiceTree);
 
 // PATCH
 api.patch('/:idService',ServiceController.patchService);

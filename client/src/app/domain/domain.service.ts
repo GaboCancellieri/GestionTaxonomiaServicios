@@ -38,21 +38,10 @@ export class DomainService {
     // ************
     // *** POST ***
     // ************
-    cargarDomain(
-        dniPac: string,
-        nombrePac: string,
-        apellidoPac: string,
-        telefonoPac: string,
-        direccionPac: string,
-        barrioPac: string,
-        fechaNacimientoPac: Date): Promise<Domain> {
-
+    addDomain(
+        name: string): Promise<Domain> {
         return this.http.post(this.domainURL,
-            JSON.stringify({
-                dniDomain: dniPac, nombreDomain: nombrePac,
-                apellidoDomain: apellidoPac, telefonoDomain: telefonoPac, direccionDomain: direccionPac,
-                barrioDomain: barrioPac, fechaNacimientoDomain: fechaNacimientoPac
-            }), { headers: this.headers })
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Domain)
             .catch(this.handleError);
@@ -61,36 +50,11 @@ export class DomainService {
     // *************
     // *** PATCH ***
     // *************
-    editarDomain(
-        idPac: string,
-        nombrePac: string,
-        apellidoPac: string,
-        telefonoPac: string,
-        direccionPac: string,
-        barrioPac: string,
-        fechaNacimientoPac: Date): Promise<Domain> {
-        return this.http.patch(this.domainURL + '/' + idPac,
-            JSON.stringify({
-                nombreDomain: nombrePac,
-                apellidoDomain: apellidoPac, telefonoDomain: telefonoPac, direccionDomain: direccionPac,
-                barrioDomain: barrioPac, fechaNacimientoDomain: fechaNacimientoPac
-            }), { headers: this.headers })
-            .toPromise()
-            .then(response => response.json().obj as Domain)
-            .catch(this.handleError);
-    }
-
-    cargarConsumicion(idDomain: string, idMedicamento: string, frec: number, cantCon: number): Promise<Domain> {
-        return this.http.patch(this.domainURL + '/cargarConsumicion/' + idDomain + '/' + idMedicamento,
-            JSON.stringify({ frecuencia: frec, cantidadConsumicion: cantCon }), { headers: this.headers })
-            .toPromise()
-            .then(response => response.json().obj as Domain)
-            .catch(this.handleError);
-    }
-
-    quitarConsumicion(idPac: string, idConsum: string): Promise<Domain> {
-        return this.http.patch(this.domainURL + '/quitarConsumicion/' + idPac,
-            JSON.stringify({ idConsumicion: idConsum}), { headers: this.headers })
+    editDomain(
+        idDomain: string,
+        name: string): Promise<Domain> {
+        return this.http.patch(this.domainURL + '/' + idDomain,
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Domain)
             .catch(this.handleError);
@@ -99,8 +63,8 @@ export class DomainService {
     // **************
     // *** DELETE ***
     // **************
-    deleteDomain(idPac: string): Promise<Domain> {
-        return this.http.delete(this.domainURL + '/' + idPac)
+    deleteDomain(idDomain: string): Promise<Domain> {
+        return this.http.delete(this.domainURL + '/' + idDomain)
             .toPromise()
             .then(response => response.json().obj as Domain)
             .catch(this.handleError);

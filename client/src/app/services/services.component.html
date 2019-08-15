@@ -6,22 +6,22 @@
 
         <div class="br-pagebody pd-x-20 pd-sm-x-30">
             <div class="row row-sm">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card card-default mb-3">
                         <div class="card-header">
                             <h6 style="text-decoration: none;color: #333;">
                                 <strong style="text-decoration: none;color: #333;">Service administration
-                                    <button pButton class="ui-button-rounded float-right" label="New Service"
+                                    <button pButton class="ui-button-rounded float-right" label="Add Service"
                                         icon="fas fa-plus" data-toggle="modal" data-target="#modalAddService">
                                     </button>
                                 </strong>
                             </h6>
                         </div>
                         <div class="card-body">
-                            <p-tree [value]="services"></p-tree>
+                            <p-tree [value]="serviceTree"></p-tree>
                         </div>
                         <div class="card-footer">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -39,75 +39,57 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New Service  </h5>
-                <i class="fas fa-sitemap" style="margin-left: 2%"></i>                
+                <h5 class="modal-title" id="exampleModalLabel">Add Service </h5>
+                <i class="fas fa-sitemap" style="margin-left: 2%"></i>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAdd>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form (ngSubmit)="f.form.valid 
-                && model.dniService && model.nombreService
-                && model.apellidoService && model.telefonoService
-                && model.matriculaService && model.especialidadService
-                
-                && cargarService(f);" #f="ngForm" novalidate>
+                && model.serviceName && selectedLayer && selectedDomain
+                && addService(f);" #f="ngForm" novalidate>
                 <div class="modal-body">
-
                     <div class="form-group required">
-                        <label class="control-label" for="dniService">DNI:</label>
-                        <input type="text" class="form-control" name="dniService" [(ngModel)]="model.dniService"
-                            #dniService="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.dniService" severity="error" text="Campo Obligatorio.">
+                        <label class="control-label" for="serviceName">Name:</label>
+                        <input type="text" class="form-control" name="serviceName" [(ngModel)]="model.serviceName"
+                            #serviceName="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !model.serviceName" severity="error" text="Required field.">
                         </p-message>
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="nombreService">Nombre:</label>
-                        <input type="text" class="form-control" name="nombreService" [(ngModel)]="model.nombreService"
-                            #nombreService="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.nombreService" severity="error"
-                            text="Campo Obligatorio."></p-message>
+                        <label class="control-label" for="serviceLayer">Layer:</label>
+                        <select class="form-control" [(ngModel)]="selectedLayer" name="selectedLay">
+                            <option *ngFor="let layer of layers" [ngValue]="layer">{{layer.name}}</option>
+                        </select>
+                        <p-message *ngIf="f.submitted && !selectedLayer" severity="error" text="Required field.">
+                        </p-message>
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label" for="apellidoService">Apellido:</label>
-                        <input type="text" class="form-control" name="apellidoService" [(ngModel)]="model.apellidoService"
-                            #apellidoService="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.apellidoService" severity="error"
-                            text="Campo Obligatorio."></p-message>
+                        <label class="control-label" for="serviceDomain">Domain:</label>
+                        <select class="form-control" [(ngModel)]="selectedDomain" name="selectedDom">
+                                <option *ngFor="let domain of domains" [ngValue]="domain">{{domain.name}}</option>
+                            </select>
+                        <p-message *ngIf="f.submitted && !selectedDomain" severity="error" text="Required field.">
+                        </p-message>
                     </div>
 
-                    <div class="form-group required">
-                        <label class="control-label" for="telefonoService">Telefono:</label>
-                        <input type="text" class="form-control" name="telefonoService" [(ngModel)]="model.telefonoService"
-                            #telefonoService="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !model.telefonoService" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
+                    <div class="form-group">
+                        <label class="control-label" for="serviceStandard">Standard:</label>
+                        <select class="form-control" [(ngModel)]="selectedStandard" name="selectedStand">
+                                <option *ngFor="let standard of standards" [ngValue]="standard">{{standard.name}}</option>
+                            </select>
                     </div>
 
-                    <div class="form-group required">
-                        <label class="control-label" for="matriculaService">Matricula:</label>
-                        <input type="text" class="form-control" name="matriculaService"
-                            [(ngModel)]="model.matriculaService" #matriculaService="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !model.matriculaService" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
-                    </div>
-
-                    <div class="form-group required">
-                        <label class="control-label" for="especialidadService">Especialidad:</label>
-                        <input type="text" class="form-control" name="especialidadService"
-                            [(ngModel)]="model.especialidadService" #especialidadService="ngModel" autocomplete="off"
-                            required />
-                        <p-message *ngIf="f.submitted && !model.especialidadService" severity="error"
-                            text="Campo Obligatorio."></p-message>
-
+                    <div class="form-group">
+                        <label class="control-label" for="serviceParent">Service:</label>
+                        <input type="text" class="form-control" name="serviceParent" [(ngModel)]="model.serviceParent"
+                            #serviceParent="ngModel" autocomplete="off" required />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
+                    <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check"
                         type="submit">
                     </button>
                 </div>

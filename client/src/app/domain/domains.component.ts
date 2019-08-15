@@ -12,7 +12,8 @@ import Swal from 'sweetalert2';
   animations: [routerTransition()]
 })
 export class DomainComponent implements OnInit {
-  @ViewChild('cerrarAgregar') cerrarAgregar: ElementRef;
+  @ViewChild('closeAdd') closeAdd: ElementRef;
+  @ViewChild('closeEdit') closeEdit: ElementRef;
 
   model: any = {};
   domains: Domain[] = [];
@@ -29,13 +30,7 @@ export class DomainComponent implements OnInit {
     this.getDomains();
 
     this.cols = [
-      { field: 'dni', header: 'DNI' },
-      { field: 'nombre', header: 'Nombre' },
-      { field: 'apellido', header: 'Apellido' },
-      { field: 'telefono', header: 'Telefono' },
-      { field: 'direccion', header: 'Direccion' },
-      { field: 'barrio', header: 'Barrio' },
-      { field: 'fechaNacimiento', header: 'Fecha de Nacimiento' }
+      { field: 'name', header: 'Name' },
     ];
   }
 
@@ -43,39 +38,91 @@ export class DomainComponent implements OnInit {
   // *** GET ***
   // ***********
   getDomains() {
-    this.hoy = new Date(Date.now()).toLocaleString().slice(0, 14);
     this.domainService.getDomains()
       .then(domains => {
         this.domains = domains;
       });
   }
 
-  // ***************
-  // *** AGREGAR ***
-  // ***************
-  cargarDomain(f: NgForm) {
-    this.domainService.cargarDomain(this.model.dniDomain, this.model.nombreDomain, this.model.apellidoDomain,
-      this.model.telefonoDomain, this.model.direccionDomain, this.model.barrioDomain, this.model.fechaNacimientoDomain)
-      .then(domainAgregado => {
-        // cierro el modal
-        this.cerrarAgregar.nativeElement.click();
+  // ***********
+  // *** ADD ***
+  // ***********
+  addDomain(f: NgForm) {
+    this.domainService.addDomain(this.model.name)
+      .then(addedDomain => {
+        this.closeAdd.nativeElement.click();
 
-        // Muestro un mensajito de Agregado con Éxito
         Swal.fire({
           type: 'success',
-          title: 'Agregado!',
-          text: 'Se ha creado el domain correctamente.',
+          title: 'Success!',
+          text: 'Domain added successfully.',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1200
         });
 
-        // Agrego el Médico al Arreglo de Médicos (actualiza la tabla)
-        this.domains.push(domainAgregado);
+        this.domains.push(addedDomain);
 
-        // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
         this.model = {};
         f.resetForm();
       });
+  }
+
+  // ************
+  // *** EDIT ***
+  // ************
+  editDomain(f: NgForm) {
+    this.domainService.editDomain(this.selectedDomain._id, this.selectedDomain.name)
+      .then(editedDomain => {
+        this.closeEdit.nativeElement.click();
+
+        Swal.fire({
+          type: 'success',
+          title: 'Success!',
+          text: 'Domain edited successfully.',
+          showConfirmButton: false,
+          timer: 1200
+        });
+      });
+  }
+
+  // **************
+  // *** DELETE ***
+  // **************
+  deleteDomain() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+      .then((willDelete) => {
+        if (willDelete.value) {
+          this.domainService.deleteDomain(this.selectedDomain._id)
+            .then(deletedDomain => {
+              Swal.fire(
+                'Deleted!',
+                'Domain has been deleted.',
+                'success'
+              );
+
+              let i;
+              this.domains.forEach((layer, index) => {
+                if (layer._id === deletedDomain._id) {
+                  i = index;
+                }
+              });
+
+              this.domains.splice(i, 1);
+              this.selectedDomain = null;
+            });
+        } else {
+          this.selectedDomain = null;
+        }
+      });
+
   }
 }
 

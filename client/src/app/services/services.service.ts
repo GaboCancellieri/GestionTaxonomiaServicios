@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { UrlService } from '../window.provider.service';
 import { Service } from './service';
+import { TreeNode } from 'primeng/api';
 import Swal from 'sweetalert2';
 
 
@@ -30,10 +31,10 @@ export class ServiceService {
             .catch(this.handleError);
     }
 
-    getServicesNoAsignados(idPaciente: string): Promise<Service[]> {
-        return this.http.get(this.serviceURL + '/servicesNoAsignados/' + idPaciente)
+    getServiceTree(): Promise<TreeNode[]> {
+        return this.http.get(this.serviceURL + '/service/tree')
             .toPromise()
-            .then(response => response.json().obj as Service[])
+            .then(response => response.json().obj as TreeNode[])
             .catch(this.handleError);
     }
 

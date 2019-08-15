@@ -6,9 +6,15 @@ import { NgForm } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 
 import Swal from 'sweetalert2';
+import { LayerService } from '../layers/layer.service';
+import { DomainService } from '../domain/domain.service';
+import { StandardService } from '../standards/standard.service';
+import { Layer } from '../layers/layer';
+import { Domain } from '../domain/domain';
+import { Standard } from '../standards/standard';
 
 @Component({
-  selector: 'app-productos',
+  selector: 'app-services',
   templateUrl: './services.component.html',
   animations: [routerTransition()]
 })
@@ -18,33 +24,60 @@ export class ServiceComponent implements OnInit {
   model: any = {};
   services: Service[];
   serviceTree: TreeNode[];
-  cols: any[];
   selectedService: Service;
 
+  layers: Layer[];
+  selectedLayer: Layer;
+
+  domains: Domain[];
+  selectedDomain: Domain;
+
+  standards: Standard[];
+  selectedStandard: Standard;
+
   constructor(
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private layerService: LayerService,
+    private domainService: DomainService,
+    private standardService: StandardService,
   ) { }
 
 
   ngOnInit() {
-    this.getServices();
-    this.cols = [
-      { field: 'layer', header: 'Layer' },
-      { field: 'name', header: 'Name' },
-    ];
+    this.getServiceTree();
+    this.getLayers();
+    this.getDomains();
+    this.getStandards();
   }
 
   // ***********
   // *** GET ***
   // ***********
-  getServices() {
-    this.serviceService.getServices()
-      .then(services => {
-        this.services = services;
-        this.makeServiceTree(services)
-        .then(serviceTree => {
-          this.serviceTree = serviceTree;
-        });
+  getServiceTree() {
+    this.serviceService.getServiceTree()
+      .then(serviceTree => {
+        this.serviceTree = serviceTree;
+      });
+  }
+
+  getLayers() {
+    this.layerService.getLayers()
+      .then(layers => {
+        this.layers = layers;
+      });
+  }
+
+  getDomains() {
+    this.domainService.getDomains()
+      .then(domains => {
+        this.domains = domains;
+      });
+  }
+
+  getStandards() {
+    this.standardService.getStandards()
+      .then(standards => {
+        this.standards = standards;
       });
   }
 
@@ -73,38 +106,6 @@ export class ServiceComponent implements OnInit {
         // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
         f.resetForm();
       });
-  }
-
-  // ***************
-  // **** OTHER ****
-  // ***************
-  async makeServiceTree(services: Service[]): Promise<TreeNode[]> {
-    if (services && services.length !== 0) {
-      const serviceTree = [];
-      for (const service of services) {
-        const children = await this.makeServiceTree(service.services);
-        const layerName = this.getInitials(service.layer.name);
-        const serviceNode = {
-          label: layerName + ': ' + service.name,
-          data: service._id,
-          expandedIcon: 'fas fa-folder-open',
-          collpasedIcon: 'fas fa-folder',
-          children
-        };
-        serviceTree.push(serviceNode);
-      }
-      return serviceTree;
-    }
-  }
-
-  getInitials(str: string) {
-    const names = str.split(' ');
-    let initials = names[0].substring(0, 1).toUpperCase();
-
-    if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    }
-    return initials;
   }
 }
 

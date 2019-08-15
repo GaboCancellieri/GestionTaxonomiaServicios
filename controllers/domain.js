@@ -48,75 +48,32 @@ function getDomain(req, res){
 }
 
 function postDomain(req, res) {
-    if (!req.body.dniDomain) {
+    if (!req.body.name) {
         return res.status(400).json({
             title: 'Error',
-            error: 'No ingreso DNI'
+            error: 'Field "Name" is required'
         });
     }
-    if (!req.body.nombreDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso nombre'
-        });
-    }
-    if (!req.body.apellidoDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso apellido'
-        });
-    }
-    if (!req.body.telefonoDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso telefono'
-        });
-    }
-    if (!req.body.direccionDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso direccion'
-        });
-    }
-    if (!req.body.barrioDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso barrio'
-        });
-    }
-    if (!req.body.fechaNacimientoDomain) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'No ingreso fecha de nacimiento'
-        });
-    }
-    
-    var nuevoDomain = new Domain({
-        dni: req.body.dniDomain,
-        nombre: req.body.nombreDomain,
-        apellido: req.body.apellidoDomain,
-        telefono: req.body.telefonoDomain,
-        direccion: req.body.direccionDomain,
-        barrio: req.body.barrioDomain,
-        fechaNacimiento:req.body.fechaNacimientoDomain
-      
+
+    var newDomain = new Domain({
+        name: req.body.name
     })
 
-    nuevoDomain.save().then(function (nuevoDomain) {
+    newDomain.save().then(function (nuevoDomain) {
         res.status(201).json({
-            message: 'Domain creado',
+            message: 'Domain added successfully',
             obj: nuevoDomain
         });
 
     }, function (err) {
         if (err.code == 11000) {
             var msj = ""
-            if (err.errmsg.toString().includes("dni"))
-                msj = "DNI Domain";
+            if (err.errmsg.toString().includes("name"))
+                msj = "Name";
            
             return res.status(404).json({
                 title: 'Error',
-                error: msj + ' existente.'
+                error: msj + ' already exists.'
             });
         }
         return res.status(404).json({
@@ -127,6 +84,13 @@ function postDomain(req, res) {
 }
 
 function patchDomain(req, res) {
+    if (!req.body.name) {
+        return res.status(400).json({
+            title: 'Error',
+            error: 'Field "Name" is required'
+        });
+    }
+
     Domain.findById(req.params.idDomain, function (err, domain) {
         if (err) {
             return res.status(400).json({
@@ -137,16 +101,11 @@ function patchDomain(req, res) {
         if (!domain) {
             return res.status(404).json({
                 title: 'Error',
-                error: 'Domain no encontrado'
+                error: 'Domain not found.'
             });
         }
 
-        domain.nombre = req.body.nombreDomain;
-        domain.apellido = req.body.apellidoDomain;
-        domain.telefono = req.body.telefonoDomain;
-        domain.direccion = req.body.direccionDomain;
-        domain.barrio = req.body.barrioDomain;
-        domain.fechaNacimiento=req.body.fechaNacimientoDomain
+        domain.name = req.body.name;
 
         domain.save().then(function (domain) {
             res.status(200).json({
@@ -154,6 +113,16 @@ function patchDomain(req, res) {
                 obj: domain
             });
         }, function (err) {
+            if (err.code == 11000) {
+                var msj = ""
+                if (err.errmsg.toString().includes("name"))
+                    msj = "Name";
+               
+                return res.status(404).json({
+                    title: 'Error',
+                    error: msj + ' already exists.'
+                });
+            }
             return res.status(404).json({
                 title: 'Error',
                 error: err
@@ -166,10 +135,10 @@ function deleteDomain(req, res){
     Domain.findOne({'_id': req.params.idDomain})
     .exec(function (err, domain) {
         if (domain) {
-            domain.remove().then(function (domainEliminado) {
+            domain.remove().then(function (deletedDomain) {
                 return res.status(200).json({
-                    message: 'domain eliminado correctamente',
-                    obj: domainEliminado
+                    message: 'Domain deleted successfully.',
+                    obj: deletedDomain
                 });
             }, function (err) {
                 return res.status(400).json({

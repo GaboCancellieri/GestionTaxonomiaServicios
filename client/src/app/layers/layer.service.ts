@@ -9,65 +9,44 @@ import Swal from 'sweetalert2';
 @Injectable()
 export class LayerService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
-    private layerURL = this.urlService.getRestApiUrl() + '/layer';  // URL a la api
+    private layerURL = this.urlService.getRestApiUrl() + '/layer';
 
     constructor(
         private http: Http,
         private urlService: UrlService
     ) { }
-    // me conecto a la base de datos
-    getLayers(estado: string): Promise<Layer[]> {
+
+    getLayers(): Promise<Layer[]> {
         return this.http.get(this.layerURL)
             .toPromise()
-            .then(response => response.json().obj as Layer[]) // coneccion con exito
-            .catch(this.handleError); // obtento el error en caso de que se produzca uno
+            .then(response => response.json().obj as Layer[])
+            .catch(this.handleError);
     }
 
-    cargarLayer(
-        fechaPed: Date,
-        idPac: string,
-        idMedica: string,
-        idFarma: string,
-        idRepar: string,
+    addLayer(
+        name: string,
     ): Promise<Layer> {
-        console.log('entre a cagar layer');
         return this.http.post(this.layerURL,
-            JSON.stringify({
-                fechaLayer: fechaPed, idPaciente: idPac, idMedicamento: idMedica,
-                idFarmacia: idFarma, idRepartidor: idRepar
-            }), { headers: this.headers })
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Layer)
             .catch(this.handleError);
     }
 
-    editarLayer(
-        idPed: string,
-        estadoPed: string,
-        horaYFechaPed: Date
-    ): Promise<Layer> {
-        console.log('entre a layer service editar');
-        return this.http.patch(this.layerURL + '/' + idPed,
-            JSON.stringify({
-                estadoLayer: estadoPed,
-                horaYFechaLayer: horaYFechaPed
-            }), { headers: this.headers })
+    editLayer(
+        idLayer: string,
+        name: string): Promise<Layer> {
+        return this.http.patch(this.layerURL + '/' + idLayer,
+            JSON.stringify({ name }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Layer)
             .catch(this.handleError);
     }
 
-    deleteLayer(idPed: string): Promise<Layer> {
-        return this.http.delete(this.layerURL + '/' + idPed)
+    deleteLayer(idLayer: string): Promise<Layer> {
+        return this.http.delete(this.layerURL + '/' + idLayer)
             .toPromise()
             .then(response => response.json().obj as Layer)
-            .catch(this.handleError);
-    }
-
-    contarLayers() {
-        return this.http.get(this.layerURL + '/conteo/000')
-            .toPromise()
-            .then(response => response.json().obj as any)
             .catch(this.handleError);
     }
 
