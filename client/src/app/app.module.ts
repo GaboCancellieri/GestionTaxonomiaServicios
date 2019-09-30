@@ -19,6 +19,7 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {TabViewModule} from 'primeng/tabview';
 import {TreeModule} from 'primeng/tree';
+import {OrganizationChartModule} from 'primeng/organizationchart';
 
 // COMPONENTES
 import { AppComponent } from './app.component';
@@ -82,6 +83,7 @@ import { PermissionService } from './usuario/permiso.service';
     MessageModule,
     TabViewModule,
     TreeModule,
+    OrganizationChartModule
   ],
   providers: [
     AuthenticationService,

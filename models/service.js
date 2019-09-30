@@ -20,10 +20,10 @@ var ServiceSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Standard'
     },
-    services: [{
+    parent: {
         type: Schema.Types.ObjectId,
         ref: 'Service'
-    }],
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'

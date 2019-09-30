@@ -38,19 +38,12 @@ export class ServiceService {
             .catch(this.handleError);
     }
 
-    cargarService(
-        dniMed: string,
-        nombreMed: string,
-        apellidoMed: string,
-        telefonoMed: string,
-        matriculaMed: string,
-        especialidadMed: string): Promise<Service> {
+    addService(
+        name: string, layer: string, domain: string, standard: string, parent: string): Promise<Service> {
         console.log(this.serviceURL);
         return this.http.post(this.serviceURL,
             JSON.stringify({
-                dniService: dniMed, nombreService: nombreMed,
-                apellidoService: apellidoMed, telefonoService: telefonoMed,
-                matriculaService: matriculaMed, especialidadService: especialidadMed
+                name, layer, domain, standard, parent
             }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Service)

@@ -5,7 +5,16 @@
 
     <div class="br-pagebody pd-x-20 pd-sm-x-30">
         <div class="row row-sm">
-            <img src="../../assets/img/mountains_lake.jpg" alt="wallpaper" width="85%">
+                <p-organizationChart [value]="data"
+                styleClass="company">
+                <ng-template let-node pTemplate="leaf">
+                    <span style="font-weight: bolder; color: red;">{{node.label}}</span>
+                </ng-template>
+                <ng-template let-node pTemplate="default">
+                    {{node.label}}
+                </ng-template>
+            </p-organizationChart>
+            <!--<img src="../../assets/img/mountains_lake.jpg" alt="wallpaper" width="85%">-->
         </div>
     </div>
 </div>

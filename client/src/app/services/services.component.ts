@@ -19,12 +19,13 @@ import { Standard } from '../standards/standard';
   animations: [routerTransition()]
 })
 export class ServiceComponent implements OnInit {
-  @ViewChild('cerrarAgregar') cerrarAgregar: ElementRef;
+  @ViewChild('closeAdd') closeAdd: ElementRef;
 
   model: any = {};
   services: Service[];
-  serviceTree: TreeNode[];
   selectedService: Service;
+  selectedParent: Service;
+  cols = [];
 
   layers: Layer[];
   selectedLayer: Layer;
@@ -44,19 +45,28 @@ export class ServiceComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getServiceTree();
+    this.getServices();
     this.getLayers();
     this.getDomains();
     this.getStandards();
+
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'layer', header: 'Layer' },
+      { field: 'domain', header: 'Domain' },
+      { field: 'parent', header: 'Parent' },
+      { field: 'standard', header: 'Standard' },
+      { field: 'user', header: 'User' },
+    ];
   }
 
   // ***********
   // *** GET ***
   // ***********
-  getServiceTree() {
-    this.serviceService.getServiceTree()
-      .then(serviceTree => {
-        this.serviceTree = serviceTree;
+  getServices() {
+    this.serviceService.getServices()
+      .then(services => {
+        this.services = services;
       });
   }
 
@@ -84,12 +94,22 @@ export class ServiceComponent implements OnInit {
   // ***************
   // *** AGREGAR ***
   // ***************
-  cargarService(f: NgForm) {
-    this.serviceService.cargarService(this.model.dniService, this.model.nombreService, this.model.apellidoService,
-      this.model.telefonoService, this.model.matriculaService, this.model.especialidadService)
-      .then(serviceAgregado => {
+  addService(f: NgForm) {
+    let idStandard = null;
+    if (this.selectedStandard) {
+      idStandard = this.selectedStandard._id;
+    }
+
+    let idParent = null;
+    if (this.selectedParent) {
+      idParent = this.selectedParent._id;
+    }
+
+    this.serviceService.addService(this.model.serviceName, this.selectedLayer._id, this.selectedDomain._id,
+      idStandard, idParent)
+      .then(addedService => {
         // cierro el modal
-        this.cerrarAgregar.nativeElement.click();
+        this.closeAdd.nativeElement.click();
 
         // Muestro un mensajito de Agregado con Éxito
         Swal.fire({
@@ -101,7 +121,7 @@ export class ServiceComponent implements OnInit {
         });
 
         // Agrego el Médico al Arreglo de Médicos (actualiza la tabla)
-        this.services.push(serviceAgregado);
+        this.services.push(addedService);
 
         // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
         f.resetForm();

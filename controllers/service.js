@@ -4,7 +4,12 @@ var Service = require('../models/service');
 
 // FUNCTIONS
 function getServices(req, res){
-    Service.find({}, function (err, services) {
+    Service.find({})
+    .populate('layer')
+    .populate('domain')
+    .populate('standard')
+    .populate('parent')
+    .exec((err, services) => {
         if (err) {
             return res.status(400).json({
                 title: 'Error',
@@ -88,68 +93,51 @@ function getServiceTree(req, res){
 }
 
 function postService(req, res) {
-    if (!req.body.dniService) {
+    if (!req.body.name) {
         return res.status(400).json({
             title: 'Error',
-            error: err
+            error: 'Name is a required field!'
         });
     }
-    if (!req.body.nombreService) {
+
+    if (!req.body.layer) {
         return res.status(400).json({
             title: 'Error',
-            error: err
+            error: 'Layer is a required field!'
         });
     }
-    if (!req.body.apellidoService) {
+    if (!req.body.domain) {
         return res.status(400).json({
             title: 'Error',
-            error: err
-        });
-    }
-    if (!req.body.telefonoService) {
-        return res.status(400).json({
-            title: 'Error',
-            error: err
-        });
-    }
-    if (!req.body.matriculaService) {
-        return res.status(400).json({
-            title: 'Error',
-            error: err
-        });
-    }
-    if (!req.body.especialidadService) {
-        return res.status(400).json({
-            title: 'Error',
-            error: err
+            error: 'Domain is a required field!'
         });
     }
 
     var nuevoService = new Service({
-        dni: req.body.dniService,
-        nombre: req.body.nombreService,
-        apellido: req.body.apellidoService,
-        telefono: req.body.telefonoService,
-        matricula: req.body.matriculaService,
-        especialidad: req.body.especialidadService
+        name: req.body.name,
+        layer: req.body.layer,
+        domain: req.body.domain,
+        standard: req.body.standard,
+        parent: req.body.parent,
     })
 
-    nuevoService.save().then(function (nuevoService) {
-        res.status(201).json({
-            message: 'Service creado',
-            obj: nuevoService
-        });
-
+    nuevoService.save().then(function (newService) {
+        Service.populate(newService, ['layer, domain', 'standard', 'parent'], (error, serviceExp) => {
+            res.status(201).json({
+                message: 'Service creado',
+                obj: serviceExp
+            });
+        })
     }, function (err) {
         if (err.code == 11000) {
             var msj = ''
             //Catching index name inside errmsg reported by mongo to determine the correct error and showing propper message
-            if (err.errmsg.toString().includes('dni'))
-                msj = 'Dni de Service';
+            if (err.errmsg.toString().includes('name'))
+                msj = 'Service name';
            
             return res.status(404).json({
                 title: 'Error',
-                error: msj + ' existente.'
+                error: msj + ' already exists.'
             });
         }
         return res.status(404).json({

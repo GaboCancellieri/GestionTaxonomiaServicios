@@ -6,7 +6,7 @@
 
         <div class="br-pagebody pd-x-20 pd-sm-x-30">
             <div class="row row-sm">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="card card-default mb-3">
                         <div class="card-header">
                             <h6 style="text-decoration: none;color: #333;">
@@ -18,7 +18,50 @@
                             </h6>
                         </div>
                         <div class="card-body">
-                            <p-tree [value]="serviceTree"></p-tree>
+                            <p-table #dt [columns]="cols" [value]="services" selectionMode="single"
+                                [(selection)]="selectedService" [paginator]="true" [rows]="12">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                            <input *ngSwitchCase="'name'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                            <input *ngSwitchCase="'layer'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                            <input *ngSwitchCase="'domain'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                            <input *ngSwitchCase="'parent'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                            <input *ngSwitchCase="'standard'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                            <input *ngSwitchCase="'user'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-service let-columns="columns">
+                                    <tr [pSelectableRow]="service">
+                                        <td *ngFor="let col of columns">
+                                            <div *ngIf="service[col.field] && col.field == 'name'">
+                                                    {{service[col.field]}}
+                                            </div>
+                                            <div *ngIf="service[col.field] && col.field != 'name'">
+                                                    {{service[col.field].name}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
                         </div>
                         <div class="card-footer">
 
@@ -69,8 +112,8 @@
                     <div class="form-group required">
                         <label class="control-label" for="serviceDomain">Domain:</label>
                         <select class="form-control" [(ngModel)]="selectedDomain" name="selectedDom">
-                                <option *ngFor="let domain of domains" [ngValue]="domain">{{domain.name}}</option>
-                            </select>
+                            <option *ngFor="let domain of domains" [ngValue]="domain">{{domain.name}}</option>
+                        </select>
                         <p-message *ngIf="f.submitted && !selectedDomain" severity="error" text="Required field.">
                         </p-message>
                     </div>
@@ -78,14 +121,15 @@
                     <div class="form-group">
                         <label class="control-label" for="serviceStandard">Standard:</label>
                         <select class="form-control" [(ngModel)]="selectedStandard" name="selectedStand">
-                                <option *ngFor="let standard of standards" [ngValue]="standard">{{standard.name}}</option>
-                            </select>
+                            <option *ngFor="let standard of standards" [ngValue]="standard">{{standard.name}}</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label" for="serviceParent">Service:</label>
-                        <input type="text" class="form-control" name="serviceParent" [(ngModel)]="model.serviceParent"
-                            #serviceParent="ngModel" autocomplete="off" required />
+                        <label class="control-label" for="servicesParent">Parent:</label>
+                        <select class="form-control" [(ngModel)]="selectedParent" name="selectedPar">
+                            <option *ngFor="let service of services" [ngValue]="service">{{service.name}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
