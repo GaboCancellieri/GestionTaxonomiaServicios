@@ -5,6 +5,7 @@ import { Domain } from '../domain/domain';
 
 export class Service {
     _id: string;
+    code: string;
     name: string;
     layer: Layer;
     domain: Domain;

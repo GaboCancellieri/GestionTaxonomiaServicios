@@ -6,15 +6,15 @@ const http = require('http'),
 var mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect("mongodb://localhost:27017/serv_taxo_manage", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/serv_taxo_manage", { useNewUrlParser: true, useUnifiedTopology: true });
 
 // DECLARAR ROUTES
 var usuarioRoutes = require('./routes/usuario');
 var permisoRoutes = require('./routes/permiso');
 var serviceRoutes = require('./routes/service');
-var standardRoutes=require('./routes/standard');
-var domainRoutes=require('./routes/domain');
-var layerRoutes=require('./routes/layer');
+var standardRoutes = require('./routes/standard');
+var domainRoutes = require('./routes/domain');
+var layerRoutes = require('./routes/layer');
 
 var Usuario = require('./models/usuario');
 

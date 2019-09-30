@@ -6,6 +6,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
 
 // PrimeNG
 import {AccordionModule, CalendarModule, MenuItem} from 'primeng/primeng';
@@ -20,6 +21,10 @@ import {MessageModule} from 'primeng/message';
 import {TabViewModule} from 'primeng/tabview';
 import {TreeModule} from 'primeng/tree';
 import {OrganizationChartModule} from 'primeng/organizationchart';
+import { HierarchicalTreeService, MindMapService, RadialTreeService, ComplexHierarchicalTreeService } from '@syncfusion/ej2-angular-diagrams';
+import { DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService} from '@syncfusion/ej2-angular-diagrams';
+import { SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService} from '@syncfusion/ej2-angular-diagrams';
+import { DiagramContextMenuService, ConnectorEditingService } from '@syncfusion/ej2-angular-diagrams';
 
 // COMPONENTES
 import { AppComponent } from './app.component';
@@ -83,7 +88,8 @@ import { PermissionService } from './usuario/permiso.service';
     MessageModule,
     TabViewModule,
     TreeModule,
-    OrganizationChartModule
+    OrganizationChartModule,
+    DiagramModule
   ],
   providers: [
     AuthenticationService,
@@ -96,7 +102,8 @@ import { PermissionService } from './usuario/permiso.service';
     StandardService,
     DomainService,
     LayerService,
-    PermissionService
+    PermissionService,
+    HierarchicalTreeService, MindMapService, RadialTreeService, ComplexHierarchicalTreeService, DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService, SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService, DiagramContextMenuService, ConnectorEditingService
   ],
   bootstrap: [AppComponent]
 })

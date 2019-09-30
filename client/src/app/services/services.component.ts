@@ -51,11 +51,9 @@ export class ServiceComponent implements OnInit {
     this.getStandards();
 
     this.cols = [
+      { field: 'code', header: 'Code' },
       { field: 'name', header: 'Name' },
-      { field: 'layer', header: 'Layer' },
-      { field: 'domain', header: 'Domain' },
       { field: 'parent', header: 'Parent' },
-      { field: 'standard', header: 'Standard' },
       { field: 'user', header: 'User' },
     ];
   }

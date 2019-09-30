@@ -19,7 +19,7 @@
                         </div>
                         <div class="card-body">
                             <p-table #dt [columns]="cols" [value]="services" selectionMode="single"
-                                [(selection)]="selectedService" [paginator]="true" [rows]="12">
+                                [(selection)]="selectedService" [paginator]="true" [rows]="6">
                                 <ng-template pTemplate="header" let-columns>
                                     <tr>
                                         <th *ngFor="let col of columns">
@@ -28,6 +28,9 @@
                                     </tr>
                                     <tr>
                                         <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                            <input *ngSwitchCase="'code'" pInputText type="text"
+                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                                style="width:100%">
                                             <input *ngSwitchCase="'name'" pInputText type="text"
                                                 (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                                                 style="width:100%">
@@ -53,10 +56,14 @@
                                     <tr [pSelectableRow]="service">
                                         <td *ngFor="let col of columns">
                                             <div *ngIf="service[col.field] && col.field == 'name'">
-                                                    {{service[col.field]}}
+                                                {{service[col.field]}}
                                             </div>
-                                            <div *ngIf="service[col.field] && col.field != 'name'">
-                                                    {{service[col.field].name}}
+                                            <div *ngIf="service[col.field] && col.field == 'code'">
+                                                {{service[col.field]}}
+                                            </div>
+                                            <div
+                                                *ngIf="service[col.field] && col.field != 'name' && col.field != 'code'">
+                                                {{service[col.field].name}}
                                             </div>
                                         </td>
                                     </tr>

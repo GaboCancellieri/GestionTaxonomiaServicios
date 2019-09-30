@@ -1,0 +1,689 @@
+[{
+    "code": "GC",
+    "name": "Geographic communication",
+    "parent":
+}, {
+    "code": "GSM",
+    "name": "Geographic System Management",
+    "parent":
+}, {
+    "code": "HI",
+    "name": "Geographic Human Interaction",
+    "parent":
+}, {
+    "code": "HI-ABD",
+    "name": "Allow Biological Data",
+    "parent":
+}, {
+    "code": "HI-ABD1",
+    "name": "Allow showing abundance data",
+    "parent":
+}, {
+    "code": "HI-ABD2",
+    "name": "Allow showing distribution data",
+    "parent":
+}, {
+    "code": "HI-ABD3",
+    "name": "Allow showing size data",
+    "parent":
+}, {
+    "code": "HI-CDE",
+    "name": "Chain definition editor",
+    "parent":
+}, {
+    "code": "HI-CV",
+    "name": "Catalogue viewer",
+    "parent":
+}, {
+    "code": "HI-GCV",
+    "name": "Geographic chart viewer",
+    "parent":
+}, {
+    "code": "HI-GCV1",
+    "name": "Show information as histogram",
+    "parent":
+}, {
+    "code": "HI-GCV2",
+    "name": "Show information as areachart",
+    "parent":
+}, {
+    "code": "HI-GCV3",
+    "name": "Show information as piechart",
+    "parent":
+}, {
+    "code": "HI-GDSV",
+    "name": "Geographic data structure viewer",
+    "parent":
+}, {
+    "code": "HI-SLD",
+    "name": "Show load data",
+    "parent":
+}, {
+    "code": "HI-SLD1",
+    "name": "Show load files",
+    "parent":
+}, {
+    "code": "HI-SLD2",
+    "name": "Show load forms",
+    "parent":
+}, {
+    "code": "HI-SLD2.1",
+    "name": "Show load zone form",
+    "parent":
+}, {
+    "code": "HI-SLD3",
+    "name": "Show load shapefiles",
+    "parent":
+}, {
+    "code": "HI-GDV",
+    "name": "Geographic data viewer",
+    "parent":
+}, {
+    "code": "HI-GSV",
+    "name": "Geographic SPREADSHEET viewer",
+    "parent":
+}, {
+    "code": "HI-GV",
+    "name": "Geographic viewer",
+    "parent":
+}, {
+    "code": "HI-AF",
+    "name": "Advance features",
+    "parent":
+}, {
+    "code": "HI-AF1",
+    "name": "Add language selection",
+    "parent":
+}, {
+    "code": "HI-MM",
+    "name": "Map manipulation",
+    "parent":
+}, {
+    "code": "HI-LM",
+    "name": "Layer manipulation",
+    "parent":
+}, {
+    "code": "HI-LM1",
+    "name": "Layer attributes",
+    "parent":
+}, {
+    "code": "HI-LM1.1",
+    "name": "Specific ocean dephts by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.2",
+    "name": "Code of zones by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.3",
+    "name": "Description of zones by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.4",
+    "name": "Seaweed biomass data associated to stations by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.5",
+    "name": "Station name by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.6",
+    "name": "Location of station by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.7",
+    "name": "Station name by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.8",
+    "name": "Deep of oceanographic data of stations by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.9",
+    "name": "Abundance of biological data of stations by histograms",
+    "parent":
+}, {
+    "code": "HI-LM1.10",
+    "name": "Abundance of biological data of stations by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.11",
+    "name": "Size and value information about specific species by histograms",
+    "parent":
+}, {
+    "code": "HI-LM1.12",
+    "name": "Code of species found by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.13",
+    "name": "Date of census on each zone by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.14",
+    "name": "Type of census on each zone by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.15",
+    "name": "Surface covered by the fishing zones by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.16",
+    "name": "Name of species that can be fishing by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.17",
+    "name": "Zones covered by specific fishing rules by contextual menues",
+    "parent":
+}, {
+    "code": "HI-LM1.18 ",
+    "name": "Zones covered by specific fishing rules by tables",
+    "parent":
+}, {
+    "code": "HI-LM1.19",
+    "name": "Code zones by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.20",
+    "name": "Description of zones by labels",
+    "parent":
+}, {
+    "code": "HI-LM1.21",
+    "name": "Location of station by table",
+    "parent":
+}, {
+    "code": "HI-LM2",
+    "name": "Layer scales",
+    "parent":
+}, {
+    "code": "HI-LM2.1",
+    "name": "Add map scale",
+    "parent":
+}, {
+    "code": "HI-LM2.2",
+    "name": "Add map projection configuration",
+    "parent":
+}, {
+    "code": "HI-LM3",
+    "name": "Measuring",
+    "parent":
+}, {
+    "code": "HI-LM3.1",
+    "name": "Grouped zones surface in square kilometers by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.2",
+    "name": "Grouped zones surface in hectares by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.3",
+    "name": "Grouped stations distances by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.4",
+    "name": "Distribution of species of grouped stations by histograms",
+    "parent":
+}, {
+    "code": "HI-LM3.5",
+    "name": "Population density by tables",
+    "parent":
+}, {
+    "code": "HI-LM3.6",
+    "name": "Seaweed density by tables",
+    "parent":
+}, {
+    "code": "HI-LM3.7",
+    "name": "Distribution of seaweed of grouped stations by tables",
+    "parent":
+}, {
+    "code": "HI-LM3.8",
+    "name": "Distance between points in kilometers by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.9",
+    "name": "Time between two stations by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.10",
+    "name": "Area surface in square kilometers by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.11",
+    "name": "Area surface in hectares by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.12",
+    "name": "Area surface in acres by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.13",
+    "name": "Area surface in square feets by labels",
+    "parent":
+}, {
+    "code": "HI-LM3.14",
+    "name": "Distance between points in feets by labels",
+    "parent":
+}, {
+    "code": "HI-LM4",
+    "name": "Layer grouping",
+    "parent":
+}, {
+    "code": "HI-LM4.1",
+    "name": "Grouped zones by drawing",
+    "parent":
+}, {
+    "code": "HI-LM4.2",
+    "name": "Grouped stations of censuses by cliking",
+    "parent":
+}, {
+    "code": "HI-LM4.3",
+    "name": "Grouped fishing zones by drawing",
+    "parent":
+}, {
+    "code": "HI-LM5",
+    "name": "Hide Show layers",
+    "parent":
+}, {
+    "code": "HI-LM5.1",
+    "name": "Show Hide layers according to specific scales",
+    "parent":
+}, {
+    "code": "HI-LM5.1.1",
+    "name": "Ocean depths of bathymetry by depth contours",
+    "parent":
+}, {
+    "code": "HI-LM5.1.2",
+    "name": "Show zones by poligons",
+    "parent":
+}, {
+    "code": "HI-LM5.1.3",
+    "name": "Stations of specific census by points",
+    "parent":
+}, {
+    "code": "HI-LM5.1.4",
+    "name": "Population of species in specific stations",
+    "parent":
+}, {
+    "code": "HI-LM5.1.5",
+    "name": "Censuses by selectable list",
+    "parent":
+}, {
+    "code": "HI-LM5.1.6",
+    "name": "Censuses by selectable tree",
+    "parent":
+}, {
+    "code": "HI-LM6",
+    "name": "Manipulate base layers",
+    "parent":
+}, {
+    "code": "HI-LM6.1",
+    "name": "Show default base map",
+    "parent":
+}, {
+    "code": "HI-LM6.2",
+    "name": "Show menu change base map",
+    "parent":
+}, {
+    "code": "HI-MM1",
+    "name": "Overview",
+    "parent":
+}, {
+    "code": "HI-MM2",
+    "name": "Refreshing",
+    "parent":
+}, {
+    "code": "HI-MM3",
+    "name": "Labeling (add modifiy delete)",
+    "parent":
+}, {
+    "code": "HI-MM4",
+    "name": "Panning & zoom (in, out, last, next)",
+    "parent":
+}, {
+    "code": "HI-MM4.1",
+    "name": "Add increase and decrease zoom",
+    "parent":
+}, {
+    "code": "HI-MM4.2",
+    "name": "Add the zoom to fit the whole map",
+    "parent":
+}, {
+    "code": "HI-MM4.3",
+    "name": "Add the zoom to fit a specific layer",
+    "parent":
+}, {
+    "code": "HI-MM4.4",
+    "name": "Add map panning",
+    "parent":
+}, {
+    "code": "HI-GVA",
+    "name": "Geographic viewer – animation",
+    "parent":
+}, {
+    "code": "HI-GVI",
+    "name": "Geographic viewer - imagery",
+    "parent":
+}, {
+    "code": "HI-RM",
+    "name": "Raster manipulation",
+    "parent":
+}, {
+    "code": "HI-RM1",
+    "name": "Overlap raster images",
+    "parent":
+}, {
+    "code": "HI-RM2",
+    "name": "Raster images grouping",
+    "parent":
+}, {
+    "code": "HI-RM3",
+    "name": "Hide Show raster images",
+    "parent":
+}, {
+    "code": "HI-RM3.1",
+    "name": "Temperatures of the ocean",
+    "parent":
+}, {
+    "code": "HI-RM3.2",
+    "name": "Salinity levels of the ocean",
+    "parent":
+}, {
+    "code": "HI-GVM",
+    "name": "Geographic viewer – mosaicing",
+    "parent":
+}, {
+    "code": "HI-GVP",
+    "name": "Geographic viewer – perspective",
+    "parent":
+}, {
+    "code": "HI-SE",
+    "name": "Service editor",
+    "parent":
+}, {
+    "code": "MMS",
+    "name": "Geographic model/information management",
+    "parent":
+}, {
+    "code": "MMS-FA",
+    "name": "Fiches access",
+    "parent":
+}, {
+    "code": "MMS-FA1",
+    "name": "Search data",
+    "parent":
+}, {
+    "code": "MMS-FA1.1",
+    "name": "Search zones",
+    "parent":
+}, {
+    "code": "MMS-FA1.2",
+    "name": "Search stations",
+    "parent":
+}, {
+    "code": "MMS-FA1.3",
+    "name": "Search census",
+    "parent":
+}, {
+    "code": "MMS-FA2",
+    "name": "Store data",
+    "parent":
+}, {
+    "code": "MMS-FA2.1",
+    "name": "Store zones",
+    "parent":
+}, {
+    "code": "PS",
+    "name": "Geographic processing services",
+    "parent":
+}, {
+    "code": "PS-S",
+    "name": "Spatial",
+    "parent":
+}, {
+    "code": "PS-S1",
+    "name": "Route determination",
+    "parent":
+}, {
+    "code": "PS-S1.1",
+    "name": "Calculate distances between two points",
+    "parent":
+}, {
+    "code": "PS-S1.2",
+    "name": "Calculate distances (meters) between stations",
+    "parent":
+}, {
+    "code": "PS-S1.3",
+    "name": "Calculate lenght of time (in minutes) between stations",
+    "parent":
+}, {
+    "code": "PS-S2",
+    "name": "Feature matching",
+    "parent":
+}, {
+    "code": "PS-S2.1",
+    "name": "Determine similar characteristics in different zones",
+    "parent":
+}, {
+    "code": "PS-S2.2",
+    "name": "Determine similar characteristics in different stations",
+    "parent":
+}, {
+    "code": "PS-S2.3",
+    "name": "Compare data of sea conditions on different stations",
+    "parent":
+}, {
+    "code": "PS-S2.4",
+    "name": "Look for fishing areas with similar characteristics",
+    "parent":
+}, {
+    "code": "PS-S2.5",
+    "name": "Look for similar ocenaographic conditions in different zones",
+    "parent":
+}, {
+    "code": "PS-S3",
+    "name": "Proximity analisys",
+    "parent":
+}, {
+    "code": "PS-S3.1",
+    "name": "Locate stations in speficic distances",
+    "parent":
+}, {
+    "code": "PS-S3.2",
+    "name": "Obtain geographic features around a specific points in zones",
+    "parent":
+}, {
+    "code": "PS-S4",
+    "name": "Area calculation",
+    "parent":
+}, {
+    "code": "PS-S4.1",
+    "name": "Calculate zone surface in square kilometers",
+    "parent":
+}, {
+    "code": "PS-S4.2",
+    "name": "Calculate zone surface in hectares",
+    "parent":
+}, {
+    "code": "PS-S4.3",
+    "name": "Calculate seaweed density of different stations",
+    "parent":
+}, {
+    "code": "PS-S4.4",
+    "name": "Calculate the area drawn by the user",
+    "parent":
+}, {
+    "code": "PS-S5",
+    "name": "Data Analysis",
+    "parent":
+}, {
+    "code": "PS-S5.1",
+    "name": "Biological data analysis",
+    "parent":
+}, {
+    "code": "PS-S5.1.1",
+    "name": "Abundance analysis",
+    "parent":
+}, {
+    "code": "PS-S5.1.2",
+    "name": "Distribution analysis",
+    "parent":
+}, {
+    "code": "PS-S5.1.3",
+    "name": "Size analysis",
+    "parent":
+}, {
+    "code": "PS-S5.2",
+    "name": "Fetch biological data",
+    "parent":
+}, {
+    "code": "PS-S5.2.1",
+    "name": "Fetch data by zones",
+    "parent":
+}, {
+    "code": "PS-S5.2.2",
+    "name": "Fetch data by censuses",
+    "parent":
+}, {
+    "code": "PS-S5.2.3",
+    "name": "Fetch data by stations",
+    "parent":
+}, {
+    "code": "PS-T",
+    "name": "Thematic",
+    "parent":
+}, {
+    "code": "PS-T1",
+    "name": "Change detection",
+    "parent":
+}, {
+    "code": "PS-T1.1",
+    "name": "Determine changes on population of species in different censuses",
+    "parent":
+}, {
+    "code": "PS-T1.2",
+    "name": "Determine changes on distribution of seaweed in different censuses",
+    "parent":
+}, {
+    "code": "PS-T1.3",
+    "name": "Determine changes of distribution of species in different censuses",
+    "parent":
+}, {
+    "code": "PS-T2",
+    "name": "Subsetting",
+    "parent":
+}, {
+    "code": "PS-T2.1",
+    "name": "Query the biomass of seaweeds in a station",
+    "parent":
+}, {
+    "code": "PS-T2.2",
+    "name": "Query the name of a station",
+    "parent":
+}, {
+    "code": "PS-T2.3",
+    "name": "Query the location of a station",
+    "parent":
+}, {
+    "code": "PS-T2.4",
+    "name": "Query census attributes",
+    "parent":
+}, {
+    "code": "PS-T2.5",
+    "name": "Query zone attributes",
+    "parent":
+}, {
+    "code": "PS-T2.5.1",
+    "name": "Query the description of zones",
+    "parent":
+}, {
+    "code": "PS-T2.5.2",
+    "name": "Query the code of zones",
+    "parent":
+}, {
+    "code": "PS-T3",
+    "name": "Export",
+    "parent":
+}, {
+    "code": "PS-T3.1",
+    "name": "Export map to jpg format",
+    "parent":
+}, {
+    "code": "PS-T3.2",
+    "name": "Export map to pdf format",
+    "parent":
+}, {
+    "code": "PS-T3.3",
+    "name": "Export zone areas to jpg format",
+    "parent":
+}, {
+    "code": "PS-T4",
+    "name": "Loading",
+    "parent":
+}, {
+    "code": "PS-T4.1",
+    "name": "Load data by files",
+    "parent":
+}, {
+    "code": "PS-T4.1.1",
+    "name": "Load zones by files",
+    "parent":
+}, {
+    "code": "PS-T4.2",
+    "name": "Load data by forms",
+    "parent":
+}, {
+    "code": "PS-T4.2.1",
+    "name": "Load zones by forms",
+    "parent":
+}, {
+    "code": "PS-T4.3",
+    "name": "Load data by shapefiles",
+    "parent":
+}, {
+    "code": "PS-T4.3.1",
+    "name": "Load zones by shapefiles",
+    "parent":
+}, {
+    "code": "PS-T4.4",
+    "name": "Load base mape",
+    "parent":
+}, {
+    "code": "PS-T5",
+    "name": "Add panning & zoom",
+    "parent":
+}, {
+    "code": "PS-T5.1",
+    "name": "Add panning",
+    "parent":
+}, {
+    "code": "PS-T5.2",
+    "name": "Add zoom",
+    "parent":
+}, {
+    "code": "PS-T6",
+    "name": "Swtich language",
+    "parent":
+}, {
+    "code": "PS-T6.1",
+    "name": "Switch Spanish language",
+    "parent":
+}, {
+    "code": "PS-T6.2",
+    "name": "Switch English language",
+    "parent":
+}, {
+    "code": "PS-T7",
+    "name": "Map Generation",
+    "parent":
+}, {
+    "code": "PS-T7.1",
+    "name": "Local Map Generation",
+    "parent":
+}, {
+    "code": "PS-T7.2",
+    "name": "External Map Generation",
+    "parent":
+}, {
+    "code": "WTM",
+    "name": "Geographic workflow task management",
+    "parent":
+}]

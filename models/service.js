@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 //Esquema Service
 var ServiceSchema = Schema({
+    code: String,
     name: {
         type: String,
         unique: true
