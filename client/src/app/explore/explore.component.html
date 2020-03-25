@@ -1,0 +1,14 @@
+<div class="br-mainpanel">
+    <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
+        <h4 class="tx-gray-800 mg-b-5">Explore</h4>
+    </div>
+
+    <div class="br-pagebody pd-x-20 pd-sm-x-30">
+        <div class="row">
+            <div class="col-12">
+                <input type="text" pInputText [(ngModel)]="busqueda" (keyup.enter)="buscar()" />
+                <button id="disabled-btn" type="button" (click)="buscar()" pButton icon="fas fa-search"></button>
+            </div>
+        </div>
+    </div>
+</div>

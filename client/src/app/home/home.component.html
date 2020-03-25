@@ -8,17 +8,11 @@
             <p-tree [value]="data" layout="vertical" [filter]="true" filterMode="strict" [style]="{'width':'100%'}">
                 <ng-template let-node pTemplate="default">
                     <span *ngIf="node.children.length == 0"
-                        style="font-weight: bolder; color: darkturquoise;">{{node.label}}</span>
-                    <span *ngIf="node.children.length != 0" style="font-weight: bold; color: blueviolet;">{{node.label}}</span>
+                          style="font-weight: bolder; color: darkturquoise;">{{node.label}}</span>
+                    <span *ngIf="node.children.length != 0"
+                          style="font-weight: bold; color: blueviolet;">{{node.label}}</span>
                 </ng-template>
             </p-tree>
-            <!--<p-organizationChart [value]="data" styleClass="ui-organizationchart-line-right">
-                <ng-template let-node pTemplate="default">
-                    <span *ngIf="node.children.length == 0"
-                        style="font-weight: bolder !important; color: blueviolet !important;">{{node.label}}</span>
-                    <span *ngIf="node.children.length != 0">{{node.label}}</span>
-                </ng-template>
-            </p-organizationChart>-->
         </div>
     </div>
 </div>

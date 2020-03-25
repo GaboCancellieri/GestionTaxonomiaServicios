@@ -9,21 +9,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
 
 // PrimeNG
-import {AccordionModule, CalendarModule, MenuItem} from 'primeng/primeng';
+import { InputTextModule } from 'primeng/inputtext';
+import { AccordionModule, CalendarModule, MenuItem } from 'primeng/primeng';
 import { SharedModule, PanelModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/button';
 import { DataTableModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/components/table/table';
-import {DropdownModule} from 'primeng/dropdown';
+import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {TabViewModule} from 'primeng/tabview';
-import {TreeModule} from 'primeng/tree';
-import {OrganizationChartModule} from 'primeng/organizationchart';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { TabViewModule } from 'primeng/tabview';
+import { TreeModule } from 'primeng/tree';
+import { OrganizationChartModule } from 'primeng/organizationchart';
 import { HierarchicalTreeService, MindMapService, RadialTreeService, ComplexHierarchicalTreeService } from '@syncfusion/ej2-angular-diagrams';
-import { DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService} from '@syncfusion/ej2-angular-diagrams';
-import { SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService} from '@syncfusion/ej2-angular-diagrams';
+import { DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService } from '@syncfusion/ej2-angular-diagrams';
+import { SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService } from '@syncfusion/ej2-angular-diagrams';
 import { DiagramContextMenuService, ConnectorEditingService } from '@syncfusion/ej2-angular-diagrams';
 
 // COMPONENTES
@@ -38,6 +39,7 @@ import { DomainComponent } from './domain/domains.component';
 import { StandardComponent } from './standards/standards.component';
 import { LayerComponent } from './layers/layers.component';
 import { ServiceComponent } from './services/services.component';
+import { ExploreComponent } from './explore/explore.component';
 
 // SERVICIOS
 import { AuthenticationService } from './auth/auth.service';
@@ -46,10 +48,11 @@ import { WINDOW_PROVIDERS } from './window.provider';
 import { UsuarioService } from './usuario/user.service';
 import { AuthGuard } from './auth/auth.guard';
 import { ServiceService } from './services/services.service';
-import { StandardService} from './standards/standard.service';
-import { DomainService} from './domain/domain.service';
+import { StandardService } from './standards/standard.service';
+import { DomainService } from './domain/domain.service';
 import { LayerService } from './layers/layer.service';
 import { PermissionService } from './usuario/permiso.service';
+import { ExploreService } from './explore/explore.service';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,7 @@ import { PermissionService } from './usuario/permiso.service';
     StandardComponent,
     LayerComponent,
     ServiceComponent,
+    ExploreComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +93,8 @@ import { PermissionService } from './usuario/permiso.service';
     TabViewModule,
     TreeModule,
     OrganizationChartModule,
-    DiagramModule
+    DiagramModule,
+    InputTextModule
   ],
   providers: [
     AuthenticationService,
@@ -103,7 +108,21 @@ import { PermissionService } from './usuario/permiso.service';
     DomainService,
     LayerService,
     PermissionService,
-    HierarchicalTreeService, MindMapService, RadialTreeService, ComplexHierarchicalTreeService, DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService, SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService, DiagramContextMenuService, ConnectorEditingService
+    ExploreService,
+    HierarchicalTreeService,
+    MindMapService,
+    RadialTreeService,
+    ComplexHierarchicalTreeService,
+    DataBindingService,
+    SnappingService,
+    PrintAndExportService,
+    BpmnDiagramsService,
+    SymmetricLayoutService,
+    ConnectorBridgingService,
+    UndoRedoService,
+    LayoutAnimationService,
+    DiagramContextMenuService,
+    ConnectorEditingService
   ],
   bootstrap: [AppComponent]
 })

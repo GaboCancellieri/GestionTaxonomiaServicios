@@ -20,7 +20,6 @@ export class DomainService {
     // *** GET ***
     // ***********
     getDomains(): Promise<Domain[]> {
-        console.log(this.domainURL);
         return this.http.get(this.domainURL)
             .toPromise()
             .then(response => response.json().obj as Domain[])

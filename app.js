@@ -15,6 +15,7 @@ var serviceRoutes = require('./routes/service');
 var standardRoutes = require('./routes/standard');
 var domainRoutes = require('./routes/domain');
 var layerRoutes = require('./routes/layer');
+var exploreRoutes = require('./routes/explore');
 
 var Usuario = require('./models/usuario');
 
@@ -62,6 +63,7 @@ app.use('/service', serviceRoutes);
 app.use('/standard', standardRoutes);
 app.use('/domain', domainRoutes);
 app.use('/layer', layerRoutes);
+app.use('/explore', exploreRoutes);
 
 
 //#########################################################
