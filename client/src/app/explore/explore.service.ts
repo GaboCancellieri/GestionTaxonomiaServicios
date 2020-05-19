@@ -13,8 +13,8 @@ export class ExploreService {
         private urlService: UrlService
     ) { }
 
-    buscar(word: string) {
-        return this.http.get(this.URL + '/' + word)
+    buscar(word: string, method: string) {
+        return this.http.get(this.URL + '/' + word + '/' + method)
             .toPromise()
             .then(response => response.json().obj as any[])
             .catch(this.handleError);

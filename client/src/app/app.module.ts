@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
-
+import { Location } from '@angular/common';
 // PrimeNG
 import { InputTextModule } from 'primeng/inputtext';
 import { AccordionModule, CalendarModule, MenuItem } from 'primeng/primeng';

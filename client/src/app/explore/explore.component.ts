@@ -11,18 +11,27 @@ import { ExploreService } from './explore.service';
 })
 export class ExploreComponent implements OnInit {
     public busqueda: string;
-
+    public cols;
+    public results;
+    public methodName;
     constructor(
         private exploreService: ExploreService
     ) { }
 
 
     ngOnInit() {
-
+        this.cols = [
+            { field: 'name', header: 'Name' },
+            { field: 'value', header: 'Value' },
+          ];
     }
 
-    buscar() {
-        console.log(this.busqueda);
-        this.exploreService.buscar(this.busqueda);
+    buscar(selectedMethod: string) {
+        this.methodName = selectedMethod;
+        this.exploreService.buscar(this.busqueda, selectedMethod)
+        .then(results => {
+            console.log(results);
+            this.results = results;
+        });
     }
 }

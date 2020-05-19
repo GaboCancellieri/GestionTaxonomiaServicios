@@ -5,6 +5,6 @@ var api = express.Router();
 var ExploreController = require('../controllers/explore');
 
 // GETS
-api.get('/:word', ExploreController.buscar);
+api.get('/:word/:method', ExploreController.buscar);
 
 module.exports = api; 

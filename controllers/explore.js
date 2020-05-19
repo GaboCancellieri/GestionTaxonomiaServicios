@@ -20,23 +20,10 @@ async function buscar(req, res) {
     const porcEsp = deteccion['spanish'];
     const porcEng = deteccion['english'];
 
-    console.log(porcEng + ' - ' + porcEsp)
-
-    let stringEng = '';
+    let stringEng = word;
     if (!porcEng || !porcEsp || porcEng < porcEsp) {
         // traducir a ingles
         stringEng = await translate(word, { from: 'es', to: 'en' });
-    }
-
-    //Tokenization
-    const wordTokens = tokenizer.tokenize(stringEng);
-    console.log(wordTokens);
-
-    //Synonyms
-    const values = await getSynonyms(wordTokens);
-    const synonymMat = [];
-    for (const value of values) {
-        synonymMat.push(value[1].synonyms);
     }
 
     //Taxonomy
@@ -47,23 +34,39 @@ async function buscar(req, res) {
             leaves.push(service);
         }
     }
-    
-    // for (const service of leaves) {
-        const nameArr = leaves[96].name.split(' ');
-        console.log(leaves[96].name.split(' '));
-        for (const nameWord of nameArr) {
-            for (const synonymArr of synonymMat) {
-                console.log('------------------------------------------------')
-                console.log(synonymArr)
-                console.log('------------------------------------------------')
-                for (const synonym of synonymArr) {
-                console.log('******************************')
-                console.log(natural.JaroWinklerDistance(synonym,nameWord))
-                console.log('******************************')
-            }
-            }
+
+    let allValues = [];
+    const method = req.params.method;
+    if (method === 'Jaro–Winkler') {
+        for (const leaf of leaves) {
+            allValues.push({
+                name: leaf.name,
+                value: (natural.JaroWinklerDistance(stringEng,leaf.name,undefined,true) * 100).toFixed(2)
+            });
         }
-    // }
+    } else if (method === 'Levenshtein') {
+        for (const leaf of leaves) {
+            const levDist = natural.LevenshteinDistance(stringEng,leaf.name,undefined,true);
+            const biggerLen = Math.max(leaf.name.length, stringEng.length);
+            allValues.push({
+                name: leaf.name,
+                value: (((biggerLen - levDist) / biggerLen) * 100).toFixed(2)
+            });
+        }
+    } else if (method === `Dices co-efficient`) {
+        for (const leaf of leaves) {
+            allValues.push({
+                name: leaf.name,
+                value: (natural.DiceCoefficient(stringEng,leaf.name,undefined,true) * 100).toFixed(2)
+            });
+        }        
+    }
+
+    allValues = allValues.sort((a, b) => b.value - a.value);
+    res.status(200).json({
+        message: 'Success',
+        obj: allValues
+    });
 }
 
 async function getSynonyms(wordTokens) {
