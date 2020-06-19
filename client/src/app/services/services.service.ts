@@ -39,29 +39,21 @@ export class ServiceService {
     }
 
     addService(
-        name: string, layer: string, domain: string, standard: string, parent: string): Promise<Service> {
-        console.log(this.serviceURL);
+        name: string, layer: string, domain: string, standard: string, parent: string, user: string): Promise<Service> {
         return this.http.post(this.serviceURL,
             JSON.stringify({
-                name, layer, domain, standard, parent
+                name, layer, domain, standard, parent, user
             }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Service)
             .catch(this.handleError);
     }
 
-    editarService(
-        idMed: string,
-        nombreMed: string,
-        apellidoMed: string,
-        telefonoMed: string,
-        matriculaMed: string,
-        especialidadMed: string): Promise<Service> {
-        return this.http.patch(this.serviceURL + '/' + idMed,
+    editService(idService: string, name: string, layer: string, domain: string,
+                standard: string, parent: string, user: string): Promise<Service> {
+        return this.http.patch(this.serviceURL + '/' + idService,
             JSON.stringify({
-                nombreService: nombreMed,
-                apellidoService: apellidoMed, telefonoService: telefonoMed,
-                matriculaService: matriculaMed, especialidadService: especialidadMed
+                name, layer, domain, standard, parent, user
             }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Service)

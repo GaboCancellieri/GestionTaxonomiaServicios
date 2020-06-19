@@ -8,6 +8,7 @@ export class UrlService {
     }
 
     getRestApiUrl(): string {
-        return this.window.location.protocol + '//' + this.window.location.hostname + ':4000';
+        // return this.window.location.protocol + '//' + this.window.location.hostname;
+        return this.window.location.protocol + '//' + this.window.location.hostname + ':4500';
     }
 }

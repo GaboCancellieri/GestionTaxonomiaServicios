@@ -1,5 +1,6 @@
 'use strict'
 var Standard = require('../models/standard');
+var Service = require('../models/service');
 
 // FUNCIONES
 function getStandards(req, res) {
@@ -20,60 +21,24 @@ function getStandards(req, res) {
 }
 
 function getStandard(req, res) {
-    Estado.findOne({
-        'nombre': req.params.estado
-    }, (error, estado) => {
-        if (error) {
+    Standard.find({ _id: req.params.idStandard})
+    .exec(function (err, standards) {
+        if (err) {
             return res.status(400).json({
                 title: 'Error',
                 error: err
             });
         }
-        if (!estado) {
-            return res.status(400).json({
+        if (!standards) {
+            return res.status(404).json({
                 title: 'Error',
-                error: 'No se encontro estado'
+                error: err
             });
         }
-
-        Standard.find({
-                'estadosStandard.estado': estado._id
-            })
-            .populate([{
-                    path: 'paciente'
-                },
-                {
-                    path: 'repartidor'
-                },
-                {
-                    path: 'farmacia'
-                },
-                {
-                    path: 'medicamento'
-                },
-                {
-                    path: 'estadosStandard.estado',
-                    model: 'Estado'
-                }
-            ])
-            .exec(function (err, standards) {
-                if (err) {
-                    return res.status(400).json({
-                        title: 'Error',
-                        error: err
-                    });
-                }
-                if (!standards) {
-                    return res.status(404).json({
-                        title: 'Error',
-                        error: err
-                    });
-                }
-                res.status(200).json({
-                    message: 'Success',
-                    obj: standards
-                });
-            });
+        res.status(200).json({
+            message: 'Success',
+            obj: standards
+        });
     });
 }
 
@@ -161,30 +126,38 @@ function patchStandard(req, res) {
 }
 
 function deleteStandard(req, res) {
-    Standard.findOne({
-            '_id': req.params.idStandard
-        })
-        .exec(function (err, standard) {
-            if (standard) {
-                standard.remove().then(function (deletedStandard) {
-                    return res.status(200).json({
-                        message: 'Standard deleted successfully',
-                        obj: deletedStandard
+    Service.find({ standard: req.params.idStandard}).exec(function (err, services) {
+        if (services && services.length > 0) {
+            return res.status(400).json({
+                title: 'Denied!',
+                error: 'Can\'t delete standard because it is mapped with a service.'
+            });
+        } else {
+            Standard.findOne({
+                '_id': req.params.idStandard
+            })
+            .exec(function (err, standard) {
+                if (standard) {
+                    standard.remove().then(function (deletedStandard) {
+                        return res.status(200).json({
+                            message: 'Standard deleted successfully',
+                            obj: deletedStandard
+                        });
+                    }, function (err) {
+                        return res.status(400).json({
+                            title: 'Error',
+                            error: err.message
+                        });
                     });
-                }, function (err) {
-                    return res.status(400).json({
+                } else {
+                    return res.status(404).json({
                         title: 'Error',
                         error: err.message
                     });
-                });
-            } else {
-                return res.status(404).json({
-                    title: 'Error',
-                    error: err.message
-                });
-            }
-        });
-
+                }
+            });
+        }
+    });
 }
 
 // EXPORT

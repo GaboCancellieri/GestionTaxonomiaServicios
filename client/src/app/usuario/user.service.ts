@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { Usuario } from './usuario';
-import { Config } from '../config';
 import { Permission } from './permiso';
 import { UrlService } from '../window.provider.service';
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class UsuarioService {
@@ -39,7 +39,6 @@ export class UsuarioService {
     }
 
     public jwt(): RequestOptions {
-        // create authorization header with jwt token
         const currentUsuario = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUsuario && currentUsuario.token) {
             const headers2 = new Headers({ Authorization: 'Bearer ' + currentUsuario.token });
@@ -65,18 +64,20 @@ export class UsuarioService {
     }
 
     private handleError(error: any): Promise<any> {
-        console.error('Ocurrio un error en servicio de Usuarios: ', error);
-        alert(error.json().error);
+        console.error('Ocurrio un error en Servicio de Usuarios: ', error);
+        Swal.fire(
+            'Error!',
+            error.json().error,
+            'error'
+        );
         return Promise.reject(error.message || error);
     }
 
-
-    public updateUsuario(id: number, userName: string, userFirstName: string, userLastName: string,
+    public updateUsuario(id: string, userName: string, userFirstName: string, userLastName: string,
                          pass: string, permis: Permission[]): Promise<Usuario> {
-        return this.http
-            .put(this.usuarioURL,
+        return this.http.patch(this.usuarioURL + '/' + id,
                 JSON.stringify({
-                    _id: id, username: userName, firstName: userFirstName,
+                    username: userName, firstName: userFirstName,
                     lastName: userLastName, password: pass, permisos: permis
                 }),
                 { headers: this.headers })
@@ -89,6 +90,13 @@ export class UsuarioService {
 
     getFullUser(id: string): Promise<Usuario> {
         return this.http.get(this.usuarioURL + '/' + id, this.jwt())
+            .toPromise()
+            .then(response => response.json().obj as Usuario)
+            .catch(this.handleError);
+    }
+
+    deleteUser(id): Promise<Usuario> {
+        return this.http.delete(this.usuarioURL + '/' + id, this.jwt())
             .toPromise()
             .then(response => response.json().obj as Usuario)
             .catch(this.handleError);

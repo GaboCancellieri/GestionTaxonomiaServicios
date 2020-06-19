@@ -27,7 +27,6 @@ export class DomainService {
     }
 
     getDomain(idDomain: string): Promise<Domain> {
-        console.log(this.domainURL);
         return this.http.get(this.domainURL + '/' + idDomain)
             .toPromise()
             .then(response => response.json().obj as Domain)

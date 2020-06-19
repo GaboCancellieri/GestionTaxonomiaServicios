@@ -6,10 +6,10 @@ var auth = require("../auth.js")();
 
 api.get('/', UsuarioController.getUsuarios);
 api.get('/:userId', auth.authenticate(), UsuarioController.getUsuario);
-api.patch('/', UsuarioController.patchUsuario);
+api.patch('/:idUsuario', UsuarioController.patchUsuario);
 api.post('/', UsuarioController.postUsuario);
 api.delete('/:idUsuario', UsuarioController.deleteUsuario);
 
-api.patch('/:id/updatePermissions/', UsuarioController.patchUsuarioPermiso);
+// api.patch('/:id/updatePermissions/', UsuarioController.patchUsuarioPermiso);
 
 module.exports = api;

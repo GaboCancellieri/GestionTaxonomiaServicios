@@ -1,5 +1,6 @@
 'use strict'
 var Layer = require('../models/layer');
+var Service = require('../models/service');
 
 // FUNCIONES
 function getLayers(req, res) {
@@ -161,30 +162,38 @@ function patchLayer(req, res) {
 }
 
 function deleteLayer(req, res) {
-    Layer.findOne({
-            '_id': req.params.idLayer
-        })
-        .exec(function (err, layer) {
-            if (layer) {
-                layer.remove().then(function (deletedLayer) {
-                    return res.status(200).json({
-                        message: 'Layer deleted successfully',
-                        obj: deletedLayer
+    Service.find({ layer: req.params.idLayer}).exec(function (err, services) {
+        if (services && services.length > 0) {
+            return res.status(400).json({
+                title: 'Denied!',
+                error: 'Can\'t delete layer because it is mapped with a service.'
+            });
+        } else {
+            Layer.findOne({
+                '_id': req.params.idLayer
+            })
+            .exec(function (err, layer) {
+                if (layer) {
+                    layer.remove().then(function (deletedLayer) {
+                        return res.status(200).json({
+                            message: 'Layer deleted successfully',
+                            obj: deletedLayer
+                        });
+                    }, function (err) {
+                        return res.status(400).json({
+                            title: 'Error',
+                            error: err.message
+                        });
                     });
-                }, function (err) {
-                    return res.status(400).json({
+                } else {
+                    return res.status(404).json({
                         title: 'Error',
                         error: err.message
                     });
-                });
-            } else {
-                return res.status(404).json({
-                    title: 'Error',
-                    error: err.message
-                });
-            }
-        });
-
+                }
+            });
+        }
+    });
 }
 
 // EXPORT

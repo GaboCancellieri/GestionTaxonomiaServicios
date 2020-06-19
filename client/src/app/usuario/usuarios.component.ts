@@ -6,7 +6,6 @@ import { UsuarioService } from './user.service';
 import {Permission} from './permiso';
 import {PermissionService} from './permiso.service';
 import {SecurityUtils} from '../SecurityUtils';
-import { stringify } from 'querystring';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 
@@ -17,23 +16,19 @@ declare var $: any;
     templateUrl: './usuarios.component.html'
 })
 export class UsuariosComponent implements OnInit {
-  @ViewChild('cerrarAgregar') cerrarAgregar: ElementRef;
+  @ViewChild('closeAdd') closeAdd: ElementRef;
+  @ViewChild('closeEdit') closeEdit: ElementRef;
 
     model: any = {};
     usuarios: Usuario[];
-    selectedUsuario: Usuario;
+    selectedUser: Usuario;
     permisos: Permission[];
 
-    selectedUsuarioLocal: Usuario;
+    selectedUserLocal: Usuario;
     colsUsuarios: any;
     permisionEdit = false;
     initializedTablePermissions = false;
     usuarioEdit = false;
-
-    nombre: string;
-    apellido: string;
-    username: string;
-    password: string;
 
     constructor(
         private router: Router,
@@ -44,9 +39,6 @@ export class UsuariosComponent implements OnInit {
     ngOnInit(): void {
         this.getUsuarios();
         this.getPermissions();
-
-        console.log(localStorage.getItem('fullUser'));
-        console.log(JSON.parse(localStorage.getItem('fullUser')).permisos);
 
         this.colsUsuarios = [
             { field: 'firstName', header: 'Nombre' },
@@ -73,14 +65,19 @@ export class UsuariosComponent implements OnInit {
 
     onRowSelect(event) {
         this.usuarioEdit = true;
+        this.model.password = this.selectedUser.password;
         if (!this.initializedTablePermissions) {
             this.initializedTablePermissions = true;
         }
     }
 
+    onRowUnselect(event) {
+        this.model.password = null;
+    }
+
     hasPermision(id) {
-        if (this.selectedUsuario.permisos) {
-            for (const permiso of this.selectedUsuario.permisos) {
+        if (this.selectedUser.permisos) {
+            for (const permiso of this.selectedUser.permisos) {
                 if (permiso._id === id) {
                     return true;
                 }
@@ -96,17 +93,17 @@ export class UsuariosComponent implements OnInit {
 
     onSelect(user: Usuario): void {
         // Hacemos unos clones
-        this.selectedUsuario = Object.assign({}, user);
+        this.selectedUser = Object.assign({}, user);
     }
 
     onClean(): void {
         // Hacemos unos clones
-        this.selectedUsuario = null;
+        this.selectedUser = null;
     }
 
     onEdit(est: boolean): void {
         this.usuarioEdit = est;
-        this.selectedUsuarioLocal = this.selectedUsuario;
+        this.selectedUserLocal = this.selectedUser;
     }
 
     onSave(user: Usuario): void {
@@ -120,14 +117,14 @@ export class UsuariosComponent implements OnInit {
     editPermissions() {
         this.permisionEdit = !this.permisionEdit;
         if (this.permisionEdit) {
-            this.selectedUsuarioLocal = this.selectedUsuario;
+            this.selectedUserLocal = this.selectedUser;
         }
     }
 
     savePermissions() {
-        this.usuarioService.updateUsuario(this.selectedUsuarioLocal._id, this.selectedUsuarioLocal.username,
-            this.selectedUsuarioLocal.firstName, this.selectedUsuarioLocal.lastName,
-            this.selectedUsuarioLocal.password, this.selectedUsuarioLocal.permisos)
+        this.usuarioService.updateUsuario(this.selectedUserLocal._id, this.selectedUserLocal.username,
+            this.selectedUserLocal.firstName, this.selectedUserLocal.lastName,
+            this.selectedUserLocal.password, this.selectedUserLocal.permisos)
             .then(usr => {
                 this.getUsuarios();
                 this.editPermissions();
@@ -136,24 +133,24 @@ export class UsuariosComponent implements OnInit {
     }
 
     setPermissions(permiso) {
-        const index = this.selectedUsuarioLocal.permisos.findIndex(i => i._id === permiso._id);
+        const index = this.selectedUserLocal.permisos.findIndex(i => i._id === permiso._id);
         if (index > -1) {
-            this.selectedUsuarioLocal.permisos.splice(index, 1);
+            this.selectedUserLocal.permisos.splice(index, 1);
         } else {
-            this.selectedUsuarioLocal.permisos.push(permiso);
+            this.selectedUserLocal.permisos.push(permiso);
         }
     }
 
     cargarUsuario(f: NgForm) {
-        this.usuarioService.createUsuario(this.username, this.nombre, this.apellido, this.password)
+        this.usuarioService.createUsuario(this.model.username, this.model.nombre, this.model.apellido, this.model.password)
         .then((usuarioAgregado) => {
             // cierro el modal
-            this.cerrarAgregar.nativeElement.click();
+            this.closeAdd.nativeElement.click();
 
             // Muestro un mensajito de Agregado con Éxito
             Swal.fire({
-                title: 'Agregado!',
-                text: 'Se ha creado el usuario correctamente.',
+                title: 'Success!',
+                text: 'The user was created successfully.',
                 type: 'success',
                 showConfirmButton: false,
                 timer: 1200
@@ -163,27 +160,106 @@ export class UsuariosComponent implements OnInit {
             this.usuarios.push(usuarioAgregado);
 
             // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
-            this.nombre = null;
-            this.apellido = null;
-            this.username = null;
-            this.password = null;
+            this.model = {};
+            f.resetForm();
+        });
+    }
+
+    editUser(f: NgForm) {
+        this.usuarioService.updateUsuario(
+            this.selectedUser._id, this.selectedUser.username, this.selectedUser.firstName,
+            this.selectedUser.lastName, this.model.password, this.selectedUser.permisos)
+        .then((updatedUser) => {
+            // cierro el modal
+            this.closeEdit.nativeElement.click();
+
+            // Muestro un mensajito de Agregado con Éxito
+            Swal.fire({
+                title: 'Success!',
+                text: 'The user was updated successfully.',
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1200
+            });
+
+            let i;
+            this.usuarios.forEach((standard, index) => {
+                if (standard._id === updatedUser._id) {
+                  i = index;
+                }
+              });
+
+            this.usuarios[i] = updatedUser;
+
+            // Reseteo el formulario/modal para que no haya nada en los input cuando se vuelva a abrir
+            this.model = {};
             f.resetForm();
         });
     }
 
     generarUsername() {
-        if (this.nombre && !this.apellido) {
-            this.username = this.nombre.trim().toLowerCase() + '.';
-        }
-        if (!this.nombre && this.apellido) {
-            this.username = this.apellido.trim().toLowerCase();
-        }
-        if (this.nombre && this.apellido) {
-            this.username = this.nombre.trim().toLowerCase() + '.' + this.apellido.trim().toLowerCase();
+        if (this.selectedUser) {
+            if (this.selectedUser.firstName && !this.selectedUser.lastName) {
+                this.selectedUser.username = this.model.nombre.trim().toLowerCase() + '.';
+            }
+            if (!this.selectedUser.firstName && this.selectedUser.lastName) {
+                this.selectedUser.username = this.selectedUser.lastName.trim().toLowerCase();
+            }
+            if (this.selectedUser.firstName && this.selectedUser.lastName) {
+                this.selectedUser.username = this.selectedUser.firstName.trim().toLowerCase() + '.'
+                + this.selectedUser.lastName.trim().toLowerCase();
+            }
+        } else {
+            if (this.model.nombre && !this.model.apellido) {
+                this.model.username = this.model.nombre.trim().toLowerCase() + '.';
+            }
+            if (!this.model.nombre && this.model.apellido) {
+                this.model.username = this.model.apellido.trim().toLowerCase();
+            }
+            if (this.model.nombre && this.model.apellido) {
+                this.model.username = this.model.nombre.trim().toLowerCase() + '.' + this.model.apellido.trim().toLowerCase();
+            }
         }
     }
 
     checkPermission(permisos) {
         return SecurityUtils.checkPermissions(permisos);
     }
+
+    deleteUser() {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You won\'t be able to revert this!',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        })
+          .then((willDelete) => {
+            if (willDelete.value) {
+              this.usuarioService.deleteUser(this.selectedUser._id)
+                .then(deletedStandard => {
+                  Swal.fire(
+                    'Deleted!',
+                    'User has been deleted.',
+                    'success'
+                  );
+
+                  let i;
+                  this.usuarios.forEach((standard, index) => {
+                    if (standard._id === deletedStandard._id) {
+                      i = index;
+                    }
+                  });
+
+                  this.usuarios.splice(i, 1);
+                  this.selectedUser = null;
+                });
+            } else {
+              this.selectedUser = null;
+            }
+          });
+
+      }
 }

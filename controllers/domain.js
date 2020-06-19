@@ -1,5 +1,6 @@
 'use strict'
 var Domain = require('../models/domain');
+var Service = require('../models/service');
 
 // FUNCIONES
 function getDomains(req, res){
@@ -132,25 +133,34 @@ function patchDomain(req, res) {
 }
 
 function deleteDomain(req, res){
-    Domain.findOne({'_id': req.params.idDomain})
-    .exec(function (err, domain) {
-        if (domain) {
-            domain.remove().then(function (deletedDomain) {
-                return res.status(200).json({
-                    message: 'Domain deleted successfully.',
-                    obj: deletedDomain
-                });
-            }, function (err) {
-                return res.status(400).json({
-                    title: 'Error',
-                    error: err.message
-                });
+    Service.find({ domain: req.params.idDomain}).exec(function (err, services) {
+        if (services && services.length > 0) {
+            return res.status(400).json({
+                title: 'Denied!',
+                error: 'Can\'t delete domain because it is mapped with a service.'
             });
-        }
-        else {
-            return res.status(404).json({
-                title: 'Error',
-                error: err.message
+        } else {
+            Domain.findOne({'_id': req.params.idDomain})
+            .exec(function (err, domain) {
+                if (domain) {
+                    domain.remove().then(function (deletedDomain) {
+                        return res.status(200).json({
+                            message: 'Domain deleted successfully.',
+                            obj: deletedDomain
+                        });
+                    }, function (err) {
+                        return res.status(400).json({
+                            title: 'Error',
+                            error: err.message
+                        });
+                    });
+                }
+                else {
+                    return res.status(404).json({
+                        title: 'Error',
+                        error: err.message
+                    });
+                }
             });
         }
     });

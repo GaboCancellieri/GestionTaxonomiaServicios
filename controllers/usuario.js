@@ -1,5 +1,6 @@
 var Usuario = require('../models/usuario');
 var Permiso = require('../models/permiso');
+var Service = require('../models/service');
 
 function getUsuarios(req,res){
     var query=Usuario.find({},'_id username firstName lastName permisos');
@@ -45,15 +46,7 @@ function getUsuario(req,res){
 }
 
 function patchUsuario(req, res){
-    if(!req.body.firstName){
-        return res.status(400).json({
-            title: 'Error',
-            error: 'Nombre vacío.'
-        });
-    }
-    
-    var query = Usuario.findOne({'_id':req.body._id});
-
+    var query = Usuario.findOne({'_id': req.params.idUsuario});
         query.exec(function (err, user) {
             if (err) {
                 return res.status(404).json({
@@ -67,7 +60,6 @@ function patchUsuario(req, res){
                     error: 'Usuario no encontrado'
                 });
             }
-
             if(req.body.password && req.body.password.length>0){
                 user.password = req.body.password;
             }
@@ -146,42 +138,44 @@ function postUsuario(req,res){
     
 }
 
-function deleteUsuario(req,res){
-    if (!req.params.idUsuario) {
-        return res.status(400).json({
-            title: 'Error',
-            error: 'Falta enviar el id del usuario.'
-        });
-    }
-
-    Usuario.findOne({'_id': req.params.idUsuario})
-    .exec(function (error, usuario){
-        if (error) {
+function deleteUsuario(req,res) {
+    Service.find({ user: req.params.idUsuario}).exec(function (err, services) {
+        if (services && services.length > 0) {
             return res.status(400).json({
-                title: 'Error',
-                error: 'Ocurrio un error.'
+                title: 'Denied!',
+                error: 'Can\'t delete this user because it is mapped with a service.'
+            });
+        } else {
+            Usuario.findOne({'_id': req.params.idUsuario})
+            .exec(function (error, usuario){
+                if (error) {
+                    return res.status(400).json({
+                        title: 'Error',
+                        error: 'Ocurrio un error.'
+                    });
+                }
+        
+                if (!usuario) {
+                    return res.status(404).json({
+                        title: 'Error',
+                        error: 'No existe tal usuario.'
+                    });
+                }
+        
+                usuario.remove().then(function (usu) {
+                    return res.status(200).json({
+                        message: 'Usuario eliminado correctamente',
+                        obj: usu
+                    });
+                }, function (err) {
+                    return res.status(400).json({
+                        title: 'Error',
+                        error: err.message
+                    });
+                })
             });
         }
-
-        if (!usuario) {
-            return res.status(404).json({
-                title: 'Error',
-                error: 'No existe tal usuario.'
-            });
-        }
-
-        usuario.remove().then(function (usu) {
-            return res.status(200).json({
-                message: 'Usuario eliminado correctamente',
-                obj: usu
-            });
-        }, function (err) {
-            return res.status(400).json({
-                title: 'Error',
-                error: err.message
-            });
-        })
-    })
+    });    
 }
 
 function patchUsuarioPermiso(req, res){

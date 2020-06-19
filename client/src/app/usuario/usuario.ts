@@ -1,7 +1,7 @@
 import { Permission } from './permiso';
 
 export class Usuario {
-    _id: number;
+    _id: string;
     username: string;
     password: string;
     firstName: string;
@@ -9,11 +9,11 @@ export class Usuario {
     permisos: Permission[];
 
 
-    constructor(public newId: number,
-        public newUsername: string,
-        public newFirstName: string,
-        public newLastName: string,
-        public newPermissions: Permission[]
+    constructor(public newId: string,
+                public newUsername: string,
+                public newFirstName: string,
+                public newLastName: string,
+                public newPermissions: Permission[]
     ) {
         this._id = this.newId;
         this.username = newUsername;

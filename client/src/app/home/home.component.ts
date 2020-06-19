@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit {
   getServices() {
     this.serviceService.getServices()
       .then(services => {
-        console.log(services)
         this.makeTree(services);
       });
   }
@@ -34,17 +33,17 @@ export class HomeComponent implements OnInit {
       if (!service.parent) {
         this.data[0].children.push({
           label: service.code + ': ' + service.name,
-          icon: "fas fa-code",
+          icon: 'fas fa-code',
           children: []
         });
       } else {
-        let parentNode = await this.searchTree(this.data[0], service.parent.code + ': ' + service.parent.name);
+        const parentNode = await this.searchTree(this.data[0], service.parent.code + ': ' + service.parent.name);
         parentNode.icon = null;
-        parentNode.expandedIcon = "fas fa-folder-open";
-        parentNode.collapsedIcon = "fas fa-folder";
+        parentNode.expandedIcon = 'fas fa-folder-open';
+        parentNode.collapsedIcon = 'fas fa-folder';
         parentNode.children.push({
           label: service.code + ': ' + service.name,
-          icon: "fas fa-code",
+          icon: 'fas fa-code',
           children: []
         });
       }

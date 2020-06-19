@@ -1,9 +1,11 @@
-<div class="d-flex align-items-center justify-content-center bg-br-primary ht-100v" style="padding-bottom: 15%;">
-  <div class="login-wrapper wd-300 wd-xs-350 pd-25 pd-xs-40 bg-white rounded shadow-base">
-    <div class="signin-logo tx-center tx-28 tx-bold tx-inverse mg-b-10"><span class="tx-normal">[</span> STM
-      <span class="tx-normal">]</span></div>
-    <div class="tx-center mg-b-30"><h6><strong>Services Taxonomy Management</strong></h6></div>
-    <div class="tx-center mg-b-10">Please, enter your user data</div>
+<div class="d-flex align-items-center justify-content-center bg-br-primary ht-100v" style="padding-bottom: 15%; 
+background-image: url('../../../assets/img/wallpaper.png'); background-repeat: no-repeat; background-size: 100% 100%;">
+  <div class="login-wrapper wd-300 wd-xs-350 pd-25 pd-xs-40 bg-white rounded shadow-base" style="background-color:rgba(0, 0, 0, 0.5) !important;">
+    <div class="signin-logo tx-center tx-28 tx-bold tx-inverse mg-b-10">
+      <img src="../../../assets/img/taxo.png" class="wd-90" alt="">
+    </div>
+    <div class="tx-center mg-b-30" style="color: white !important;"><h6><strong>Taxnomia</strong></h6></div>
+    <div class="tx-center mg-b-10" style="color: white !important;">Please, enter your user data</div>
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="model.username"
@@ -13,7 +15,7 @@
         <input type="password" class="form-control" placeholder="Password" name="password"
           [(ngModel)]="model.password" #password="ngModel">
       </div>
-      <div *ngIf="f.submitted && (!username.valid || !password.valid)" class="help-block">Usuario o contraseña incorrectos</div>
+      <div *ngIf="f.submitted && (!username.valid || !password.valid)" class="help-block">Invalid username or password</div>
       <button type="submit" class="btn btn-info btn-block">Log In</button>
     </form>
   </div>

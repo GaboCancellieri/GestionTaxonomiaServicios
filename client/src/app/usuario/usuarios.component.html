@@ -1,6 +1,6 @@
 <div class="br-mainpanel">
     <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
-        <h4 class="tx-gray-800 mg-b-5">Usuarios</h4>
+        <h4 class="tx-gray-800 mg-b-5">Users</h4>
     </div>
 
     <div class="br-pagebody pd-x-20 pd-sm-x-30">
@@ -10,16 +10,16 @@
                     <div class="card-header">
                         <div>
                             <a>
-                                <strong style="text-decoration: none;color: #333;">Administración de Usuarios</strong>
+                                <strong style="text-decoration: none;color: #333;">User administration</strong>
                             </a>
-                            <button pButton *ngIf="checkPermission(['admin'])" class="ui-button-rounded float-right" label="Nuevo Usuario"
+                            <button pButton *ngIf="checkPermission(['admin'])" class="ui-button-rounded float-right" label="Add User"
                                 icon="fas fa-plus" data-toggle="modal" data-target="#modalAgregarUsuario">
                             </button>
                         </div>
                     </div>
                     <div class="card-body">
                             <p-table #dt [columns]="colsUsuarios" [value]="usuarios" selectionMode="single"
-                            [(selection)]="selectedUsuario"  [paginator]="true" [rows]="12">
+                            [(selection)]="selectedUser"  [paginator]="true" [rows]="12" (onRowSelect)="onRowSelect()">
                             <ng-template pTemplate="caption">
                                 <div style="text-align: right">
                                     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -59,7 +59,40 @@
                         </p-table>
                     </div>
                     <div class="card-footer">
-
+                        <div class="float-right">
+                            <button *ngIf="!selectedUser"
+                                disabled
+                                pButton
+                                label="Edit"
+                                icon="fas fa-pencil-alt"
+                                class="ui-button-warning ui-button-raised ui-button-rounded"
+                            >   
+                            </button>
+                            <button *ngIf="selectedUser"
+                                    pButton
+                                    label="Edit"
+                                    icon="fas fa-pencil-alt"
+                                    class="ui-button-warning ui-button-raised ui-button-rounded"
+                                    data-target="#modalEditUser" data-toggle="modal"
+                            >   
+                            </button>
+                            <button *ngIf="!selectedUser"
+                                disabled
+                                pButton
+                                label="Delete"
+                                icon="fas fa-times"
+                                class="ui-button-danger ui-button-raised ui-button-rounded"
+                            >   
+                            </button>
+                            <button *ngIf="selectedUser"
+                                    pButton
+                                    label="Delete"
+                                    icon="fas fa-times"
+                                    class="ui-button-danger ui-button-raised ui-button-rounded"
+                                    (click)="deleteUser()"
+                            >   
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,64 +100,115 @@
     </div>
 </div>
 
- <!-- ============================================================== -->
-    <!-- MODAL AGREGAR -->
-    <!-- ============================================================== -->
-    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" #cerrarAgregar>
-                        <span aria-hidden="true">&times;</span>
+<!-- ============================================================== -->
+<!-- MODAL ADD -->
+<!-- ============================================================== -->
+<div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAdd>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="f.form.valid 
+                && model.nombre
+                && model.apellido
+                && model.username
+                && model.password
+                
+                && cargarUsuario(f);" #f="ngForm" novalidate>
+                <div class="modal-body">
+
+                    <div class="form-group required">
+                        <label class="control-label" for="name">First name:</label>
+                        <input type="text" class="form-control" name="name" [(ngModel)]="model.nombre"
+                            #name="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
+                        <p-message *ngIf="f.submitted && !nombre" severity="error" text="Campo Obligatorio."></p-message>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label" for="ape">Last name:</label>
+                        <input type="text" class="form-control" name="ape" [(ngModel)]="model.apellido"
+                            #ape="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
+                        <p-message *ngIf="f.submitted && !apellido" severity="error"
+                            text="Campo Obligatorio."></p-message>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="userna">Username:</label>
+                        <input type="text" class="form-control" name="userna" [(ngModel)]="model.username"
+                            #userna="ngModel" autocomplete="off" required disabled/>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label" for="pass">Password:</label>
+                        <input type="password" class="form-control" name="pass" [(ngModel)]="model.password"
+                            #pass="ngModel" autocomplete="off" required />
+                        <p-message *ngIf="f.submitted && !password" severity="error"
+                            text="Campo Obligatorio."></p-message>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
+                        type="submit">
                     </button>
                 </div>
-                <form (ngSubmit)="f.form.valid 
-                    && nombre
-                    && apellido
-                    && username
-                    && password
-                    
-                    && cargarUsuario(f);" #f="ngForm" novalidate>
-                    <div class="modal-body">
-    
-                        <div class="form-group required">
-                            <label class="control-label" for="name">Nombre:</label>
-                            <input type="text" class="form-control" name="name" [(ngModel)]="nombre"
-                                #name="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
-                            <p-message *ngIf="f.submitted && !nombre" severity="error" text="Campo Obligatorio."></p-message>
-                        </div>
-    
-                        <div class="form-group required">
-                            <label class="control-label" for="ape">Apellido:</label>
-                            <input type="text" class="form-control" name="ape" [(ngModel)]="apellido"
-                                #ape="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
-                            <p-message *ngIf="f.submitted && !apellido" severity="error"
-                                text="Campo Obligatorio."></p-message>
-                        </div>
-    
-                        <div class="form-group">
-                            <label class="control-label" for="userna">Usuario:</label>
-                            <input type="text" class="form-control" name="userna" [(ngModel)]="username"
-                                #userna="ngModel" autocomplete="off" required disabled/>
-                        </div>
-    
-                        <div class="form-group required">
-                            <label class="control-label" for="pass">Contraseña:</label>
-                            <input type="password" class="form-control" name="pass" [(ngModel)]="password"
-                                #pass="ngModel" autocomplete="off" required />
-                            <p-message *ngIf="f.submitted && !password" severity="error"
-                                text="Campo Obligatorio."></p-message>
-    
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
-                            type="submit">
-                        </button>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL EDIT -->
+<!-- ============================================================== -->
+<div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" *ngIf="selectedUser">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeEdit>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="f.form.valid 
+                && selectedUser.firstName
+                && selectedUser.lastName
+                && selectedUser.username                
+                && editUser(f);" #f="ngForm" novalidate>
+                <div class="modal-body">
+
+                    <div class="form-group required">
+                        <label class="control-label" for="name">First name:</label>
+                        <input type="text" class="form-control" name="name" [(ngModel)]="selectedUser.firstName"
+                            #name="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
+                        <p-message *ngIf="f.submitted && !selectedUser.firstName" severity="error" text="Campo Obligatorio."></p-message>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label" for="ape">Last name:</label>
+                        <input type="text" class="form-control" name="ape" [(ngModel)]="selectedUser.lastName"
+                            #ape="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
+                        <p-message *ngIf="f.submitted && !selectedUser.lastName" severity="error"
+                            text="Campo Obligatorio."></p-message>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="userna">Username:</label>
+                        <input type="text" class="form-control" name="userna" [(ngModel)]="selectedUser.username"
+                            #userna="ngModel" autocomplete="off" required disabled/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button pButton class="ui-button-rounded ui-button-success" label="Aceptar" icon="fas fa-check"
+                        type="submit">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

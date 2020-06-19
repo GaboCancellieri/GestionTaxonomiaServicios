@@ -19,7 +19,8 @@
                         </div>
                         <div class="card-body">
                             <p-table #dt [columns]="cols" [value]="services" selectionMode="single"
-                                [(selection)]="selectedService" [paginator]="true" [rows]="6">
+                                [(selection)]="selectedService" [paginator]="true" [rows]="6"
+                                (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect()">
                                 <ng-template pTemplate="header" let-columns>
                                     <tr>
                                         <th *ngFor="let col of columns">
@@ -28,26 +29,23 @@
                                     </tr>
                                     <tr>
                                         <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                                            <input *ngSwitchCase="'code'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'name'" pInputText type="text" [(ngModel)]="filter.name"
+                                                (input)="onFilter()"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'name'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'layer'" pInputText type="text" [(ngModel)]="filter.layer"
+                                                (input)="onFilter()"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'layer'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'domain'" pInputText type="text" [(ngModel)]="filter.domain"
+                                                (input)="onFilter()"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'domain'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'parent'" pInputText type="text" [(ngModel)]="filter.parent"
+                                                (input)="onFilter()"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'parent'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'standard'" pInputText type="text" [(ngModel)]="filter.standard"
+                                                (input)="onFilter()"
                                                 style="width:100%">
-                                            <input *ngSwitchCase="'standard'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                                                style="width:100%">
-                                            <input *ngSwitchCase="'user'" pInputText type="text"
-                                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            <input *ngSwitchCase="'user'" pInputText type="text" [(ngModel)]="filter.user"
+                                                (input)="onFilter()"
                                                 style="width:100%">
                                         </th>
                                     </tr>
@@ -58,11 +56,11 @@
                                             <div *ngIf="service[col.field] && col.field == 'name'">
                                                 {{service[col.field]}}
                                             </div>
-                                            <div *ngIf="service[col.field] && col.field == 'code'">
-                                                {{service[col.field]}}
+                                            <div *ngIf="service[col.field] && col.field == 'user'">
+                                                {{service[col.field].lastName}}, {{service[col.field].firstName}}
                                             </div>
                                             <div
-                                                *ngIf="service[col.field] && col.field != 'name' && col.field != 'code'">
+                                                *ngIf="service[col.field] && col.field != 'name' && col.field != 'user'">
                                                 {{service[col.field].name}}
                                             </div>
                                         </td>
@@ -71,7 +69,40 @@
                             </p-table>
                         </div>
                         <div class="card-footer">
-
+                            <div class="float-right">
+                                <button *ngIf="!selectedService"
+                                    disabled
+                                    pButton
+                                    label="Edit"
+                                    icon="fas fa-pencil-alt"
+                                    class="ui-button-warning ui-button-raised ui-button-rounded"
+                                >   
+                                </button>
+                                <button *ngIf="selectedService"
+                                        pButton
+                                        label="Edit"
+                                        icon="fas fa-pencil-alt"
+                                        class="ui-button-warning ui-button-raised ui-button-rounded"
+                                        data-target="#modalEditService" data-toggle="modal"
+                                >   
+                                </button>
+                                <button *ngIf="!selectedService"
+                                    disabled
+                                    pButton
+                                    label="Delete"
+                                    icon="fas fa-times"
+                                    class="ui-button-danger ui-button-raised ui-button-rounded"
+                                >   
+                                </button>
+                                <button *ngIf="selectedService"
+                                        pButton
+                                        label="Delete"
+                                        icon="fas fa-times"
+                                        class="ui-button-danger ui-button-raised ui-button-rounded"
+                                        (click)="deleteService()"
+                                >   
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,49 +127,150 @@
                 </button>
             </div>
             <form (ngSubmit)="f.form.valid 
-                && model.serviceName && selectedLayer && selectedDomain
+                && model.serviceName && model.selectedLayer && model.selectedDomain
                 && addService(f);" #f="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="form-group required">
-                        <label class="control-label" for="serviceName">Name:</label>
-                        <input type="text" class="form-control" name="serviceName" [(ngModel)]="model.serviceName"
-                            #serviceName="ngModel" autocomplete="off" required />
+                        <label class="control-label" for="serviceName">Name:</label> <br>
+                        <input id="input" type="text" pInputText [(ngModel)]="model.serviceName" name="serviceName"
+                        style="width: 100%;"> 
                         <p-message *ngIf="f.submitted && !model.serviceName" severity="error" text="Required field.">
                         </p-message>
                     </div>
 
                     <div class="form-group required">
                         <label class="control-label" for="serviceLayer">Layer:</label>
-                        <select class="form-control" [(ngModel)]="selectedLayer" name="selectedLay">
-                            <option *ngFor="let layer of layers" [ngValue]="layer">{{layer.name}}</option>
-                        </select>
+                        <p-dropdown [options]="layers" [(ngModel)]="model.selectedLayer" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedLayer"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+                        <p-message *ngIf="f.submitted && !model.selectedLayer" severity="error" text="Required field.">
+                        </p-message>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label" for="serviceDomain">Domain:</label>
+                        <p-dropdown [options]="domains" [(ngModel)]="model.selectedDomain" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedDomain"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+                        <p-message *ngIf="f.submitted && !model.selectedDomain" severity="error" text="Required field.">
+                        </p-message>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="serviceStandard">Standard:</label>
+                        <p-dropdown [options]="standards" [(ngModel)]="model.selectedStandard" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedStandard"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="servicesParent">Parent:</label>
+                        <p-dropdown [options]="auxServices" [(ngModel)]="model.selectedParent" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedParent"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="servicesParent">User:</label>
+                        <p-dropdown [options]="users" [(ngModel)]="model.selectedUser" 
+                        placeholder="None" filter="true" name="selectedUser"
+                         [style]="{'width':'100%'}" [showClear]="true">
+                         <ng-template let-item pTemplate="selectedItem">
+                                <div>{{item.label}}</div>
+                        </ng-template>
+                         <ng-template let-user pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div>{{user.label}}</div>
+                            </div>
+                        </ng-template>
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check"
+                        type="submit">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL EDITAR -->
+<!-- ============================================================== -->
+<div class="modal fade" id="modalEditService" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" *ngIf="selectedService">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Service </h5>
+                <i class="fas fa-sitemap" style="margin-left: 2%"></i>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeEdit>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="f.form.valid 
+                && selectedService.name && selectedLayer && selectedDomain
+                && editService(f);" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-group required">
+                        <label class="control-label" for="serviceName">Name:</label> <br>
+                        <input id="input" type="text" pInputText [(ngModel)]="selectedService.name" name="serviceName"
+                        style="width: 100%;"> 
+                        <p-message *ngIf="f.submitted && !model.serviceName" severity="error" text="Required field.">
+                        </p-message>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label" for="serviceLayer">Layer:</label>
+                        <p-dropdown [options]="layers" [(ngModel)]="selectedLayer" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedLayer"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
                         <p-message *ngIf="f.submitted && !selectedLayer" severity="error" text="Required field.">
                         </p-message>
                     </div>
 
                     <div class="form-group required">
                         <label class="control-label" for="serviceDomain">Domain:</label>
-                        <select class="form-control" [(ngModel)]="selectedDomain" name="selectedDom">
-                            <option *ngFor="let domain of domains" [ngValue]="domain">{{domain.name}}</option>
-                        </select>
+                        <p-dropdown [options]="domains" [(ngModel)]="selectedDomain" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedDomain"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
                         <p-message *ngIf="f.submitted && !selectedDomain" severity="error" text="Required field.">
                         </p-message>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="serviceStandard">Standard:</label>
-                        <select class="form-control" [(ngModel)]="selectedStandard" name="selectedStand">
-                            <option *ngFor="let standard of standards" [ngValue]="standard">{{standard.name}}</option>
-                        </select>
+                        <p-dropdown [options]="standards" [(ngModel)]="selectedStandard" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedStandard"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="servicesParent">Parent:</label>
-                        <select class="form-control" [(ngModel)]="selectedParent" name="selectedPar">
-                            <option *ngFor="let service of services" [ngValue]="service">{{service.name}}</option>
-                        </select>
+                        <p-dropdown [options]="auxServices" [(ngModel)]="selectedParent" 
+                        placeholder="None" filter="true" optionLabel="name" name="selectedParent"
+                         [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="servicesParent">User:</label>
+                        <p-dropdown [options]="users" [(ngModel)]="selectedUser" 
+                        placeholder="None" filter="true" name="selectedUser"
+                         [style]="{'width':'100%'}" [showClear]="true">
+                         <ng-template let-item pTemplate="selectedItem">
+                                <div>{{item.label}}</div>
+                        </ng-template>
+                         <ng-template let-user pTemplate="item">
+                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div>{{user.label}}</div>
+                            </div>
+                        </ng-template>
+                        </p-dropdown>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check"
                         type="submit">

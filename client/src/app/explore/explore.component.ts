@@ -30,7 +30,6 @@ export class ExploreComponent implements OnInit {
         this.methodName = selectedMethod;
         this.exploreService.buscar(this.busqueda, selectedMethod)
         .then(results => {
-            console.log(results);
             this.results = results;
         });
     }
