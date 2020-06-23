@@ -40,8 +40,7 @@ export class ServiceComponent implements OnInit {
   standards: Standard[];
   selectedStandard: Standard = null;
 
-  users = [];
-  selectedUser: Usuario = null;
+  userId: string;
 
   constructor(
     private serviceService: ServiceService,
@@ -57,7 +56,8 @@ export class ServiceComponent implements OnInit {
     this.getLayers();
     this.getDomains();
     this.getStandards();
-    this.getUsers();
+
+    this.userId = JSON.parse(localStorage.getItem('currentUser'))._id;
 
     this.cols = [
       { field: 'name', header: 'Name' },
@@ -101,18 +101,6 @@ export class ServiceComponent implements OnInit {
       });
   }
 
-  getUsers() {
-    this.userService.getUsuarios()
-      .then(users => {
-        users.map(user => {
-          this.users.push({
-            label: user.lastName + ' ' + user.firstName,
-            value: user
-          });
-        });
-      });
-  }
-
   // ***********
   // *** ADD ***
   // ***********
@@ -127,13 +115,8 @@ export class ServiceComponent implements OnInit {
       idParent = this.model.selectedParent._id;
     }
 
-    let idUser = null;
-    if (this.model.selectedUser) {
-      idUser = this.model.selectedUser._id;
-    }
-
     this.serviceService.addService(this.model.serviceName, this.model.selectedLayer._id, this.model.selectedDomain._id,
-      idStandard, idParent, idUser).then(addedService => {
+      idStandard, idParent, this.userId).then(addedService => {
         // cierro el modal
         this.closeAdd.nativeElement.click();
 
@@ -170,13 +153,8 @@ export class ServiceComponent implements OnInit {
       idParent = this.selectedParent._id;
     }
 
-    let idUser = null;
-    if (this.selectedUser) {
-      idUser = this.selectedUser._id;
-    }
-
     this.serviceService.editService(this.selectedService._id, this.selectedService.name, this.selectedLayer._id, this.selectedDomain._id,
-      idStandard, idParent, idUser).then(editedService => {
+      idStandard, idParent, this.userId).then(editedService => {
         // cierro el modal
         this.closeEdit.nativeElement.click();
 
@@ -271,10 +249,6 @@ export class ServiceComponent implements OnInit {
     if (this.selectedService.parent) {
       this.selectedParent = this.auxServices.find((s) => s._id === this.selectedService.parent._id);
     }
-
-    if (this.selectedService.user) {
-      this.selectedUser = this.users.find((u: any) => u.value._id === this.selectedService.user._id).value;
-    }
   }
 
   onRowUnselect() {
@@ -282,7 +256,6 @@ export class ServiceComponent implements OnInit {
     this.selectedDomain = null;
     this.selectedStandard = null;
     this.selectedParent = null;
-    this.selectedUser = null;
   }
 }
 

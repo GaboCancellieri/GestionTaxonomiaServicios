@@ -7,6 +7,10 @@ var StandardSchema = Schema({
         type: String,
         unique: true
     },
+    color: {
+        type: String,
+        unique: true
+    },
 });
 var Standard = mongoose.model('Standard', StandardSchema);
 

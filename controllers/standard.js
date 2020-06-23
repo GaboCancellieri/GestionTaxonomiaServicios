@@ -51,7 +51,8 @@ function postStandard(req, res) {
     }
 
     var newStandard = new Standard({
-        name: req.body.name
+        name: req.body.name,
+        color: req.body.color
     });
 
     newStandard.save().then(function (savedStandard) {
@@ -100,6 +101,7 @@ function patchStandard(req, res) {
         }
 
         standard.name = req.body.name;
+        standard.color = req.body.color;
 
         standard.save().then(function (editedStandard) {
             res.status(200).json({

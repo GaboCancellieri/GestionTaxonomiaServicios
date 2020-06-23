@@ -33,8 +33,9 @@ export class HomeComponent implements OnInit {
       if (!service.parent) {
         this.data[0].children.push({
           label: service.code + ': ' + service.name,
+          data: (service.standard) ? service.standard.color : '#616161',
           icon: 'fas fa-code',
-          children: []
+          children: [],
         });
       } else {
         const parentNode = await this.searchTree(this.data[0], service.parent.code + ': ' + service.parent.name);
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
         parentNode.children.push({
           label: service.code + ': ' + service.name,
           icon: 'fas fa-code',
+          data: (service.standard) ? service.standard.color : '#616161',
           children: []
         });
       }

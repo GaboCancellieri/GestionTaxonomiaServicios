@@ -28,36 +28,39 @@ async function buscar(req, res) {
 
     //Taxonomy
     const taxonomy = await getTaxonomy();
-    let leaves = [];
-    for (const service of taxonomy) {
-        if (service.children.length === 0) {
-            leaves.push(service);
-        }
-    }
 
     let allValues = [];
     const method = req.params.method;
     if (method === 'Jaro–Winkler') {
-        for (const leaf of leaves) {
+        for (const leaf of taxonomy) {
             allValues.push({
-                name: leaf.name,
-                value: (natural.JaroWinklerDistance(stringEng,leaf.name,undefined,true) * 100).toFixed(2)
+                service: leaf.service,
+                domain: leaf.domain,
+                standard: leaf.standard,
+                layer: leaf.layer,
+                value: (natural.JaroWinklerDistance(stringEng,leaf.service,undefined,true) * 100).toFixed(2)
             });
         }
     } else if (method === 'Levenshtein') {
-        for (const leaf of leaves) {
-            const levDist = natural.LevenshteinDistance(stringEng,leaf.name,undefined,true);
-            const biggerLen = Math.max(leaf.name.length, stringEng.length);
+        for (const leaf of taxonomy) {
+            const levDist = natural.LevenshteinDistance(stringEng,leaf.service,undefined,true);
+            const biggerLen = Math.max(leaf.service.length, stringEng.length);
             allValues.push({
-                name: leaf.name,
+                service: leaf.service,
+                domain: leaf.domain,
+                standard: leaf.standard,
+                layer: leaf.layer,
                 value: (((biggerLen - levDist) / biggerLen) * 100).toFixed(2)
             });
         }
     } else if (method === `Dices co-efficient`) {
-        for (const leaf of leaves) {
+        for (const leaf of taxonomy) {
             allValues.push({
-                name: leaf.name,
-                value: (natural.DiceCoefficient(stringEng,leaf.name,undefined,true) * 100).toFixed(2)
+                service: leaf.service,
+                domain: leaf.domain,
+                standard: leaf.standard,
+                layer: leaf.layer,
+                value: (natural.DiceCoefficient(stringEng,leaf.service,undefined,true) * 100).toFixed(2)
             });
         }        
     }
@@ -69,29 +72,15 @@ async function buscar(req, res) {
     });
 }
 
-async function getSynonyms(wordTokens) {
-    let promises = [];
-    for (const token of wordTokens) {
-        promises.push(new Promise((resolve,reject) => {
-            wordnet.lookup(token, function (results) {
-                if (results) {
-                    resolve([ { word: token }, ...results]);
-                } else {
-                    reject(results);
-                }
-            });
-        }));
-    }
-
-    return Promise.all(promises);
-}
-
 async function getTaxonomy() {
     let serviceTree = [];
-    const services = await Service.find({});
+    const services = await Service.find({}).populate('layer').populate('domain').populate('standard');
     for (const service of services) {
         const serviceNode = {
-            name: service.name,
+            service: service.name,
+            domain: (service.domain) ? service.domain.name : null,
+            standard: (service.standard) ? service.standard.name : null,
+            layer: (service.layer) ? service.layer.name : null,
             data: service._id,
             children: []
         }

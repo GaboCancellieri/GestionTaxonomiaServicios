@@ -7,10 +7,7 @@
         <div class="row">
             <p-tree [value]="data" layout="vertical" [filter]="true" filterMode="strict" [style]="{'width':'100%'}">
                 <ng-template let-node pTemplate="default">
-                    <span *ngIf="node.children.length == 0"
-                          style="font-weight: bolder; color: darkturquoise;">{{node.label}}</span>
-                    <span *ngIf="node.children.length != 0"
-                          style="font-weight: bold; color: blueviolet;">{{node.label}}</span>
+                    <span [ngStyle]="{'color': node.data }">{{node.label}}</span>
                 </ng-template>
             </p-tree>
         </div>

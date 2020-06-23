@@ -169,22 +169,6 @@
                         placeholder="None" filter="true" optionLabel="name" name="selectedParent"
                          [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label" for="servicesParent">User:</label>
-                        <p-dropdown [options]="users" [(ngModel)]="model.selectedUser" 
-                        placeholder="None" filter="true" name="selectedUser"
-                         [style]="{'width':'100%'}" [showClear]="true">
-                         <ng-template let-item pTemplate="selectedItem">
-                                <div>{{item.label}}</div>
-                        </ng-template>
-                         <ng-template let-user pTemplate="item">
-                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                <div>{{user.label}}</div>
-                            </div>
-                        </ng-template>
-                        </p-dropdown>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button pButton class="ui-button-rounded ui-button-success" label="Submit" icon="fas fa-check"
@@ -252,22 +236,6 @@
                         <p-dropdown [options]="auxServices" [(ngModel)]="selectedParent" 
                         placeholder="None" filter="true" optionLabel="name" name="selectedParent"
                          [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label" for="servicesParent">User:</label>
-                        <p-dropdown [options]="users" [(ngModel)]="selectedUser" 
-                        placeholder="None" filter="true" name="selectedUser"
-                         [style]="{'width':'100%'}" [showClear]="true">
-                         <ng-template let-item pTemplate="selectedItem">
-                                <div>{{item.label}}</div>
-                        </ng-template>
-                         <ng-template let-user pTemplate="item">
-                            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                <div>{{user.label}}</div>
-                            </div>
-                        </ng-template>
-                        </p-dropdown>
                     </div>
                 </div>
 

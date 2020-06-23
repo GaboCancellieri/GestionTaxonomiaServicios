@@ -20,6 +20,7 @@ export class StandardComponent implements OnInit {
   cols: any[];
   selectedStandard: Standard;
   hoy: string;
+  color = '#616161';
 
   constructor(
     private standardService: StandardService
@@ -31,6 +32,7 @@ export class StandardComponent implements OnInit {
 
     this.cols = [
       { field: 'name', header: 'Name' },
+      { field: 'color', header: 'Color' },
     ];
   }
 
@@ -48,7 +50,7 @@ export class StandardComponent implements OnInit {
   // *** ADD ***
   // ***********
   addStandard(f: NgForm) {
-    this.standardService.addStandard(this.model.name)
+    this.standardService.addStandard(this.model.name, this.color)
       .then(addedStandard => {
         this.closeAdd.nativeElement.click();
 
@@ -71,7 +73,7 @@ export class StandardComponent implements OnInit {
   // *** EDIT ***
   // ************
   editStandard(f: NgForm) {
-    this.standardService.editStandard(this.selectedStandard._id, this.selectedStandard.name)
+    this.standardService.editStandard(this.selectedStandard._id, this.selectedStandard.name, this.selectedStandard.color)
       .then(editedStandard => {
         this.closeEdit.nativeElement.click();
 
@@ -91,7 +93,7 @@ export class StandardComponent implements OnInit {
   deleteStandard() {
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

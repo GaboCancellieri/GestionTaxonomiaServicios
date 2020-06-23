@@ -24,10 +24,10 @@ export class StandardService {
     }
 
     addStandard(
-        name: string,
+        name: string, color: string
     ): Promise<Standard> {
         return this.http.post(this.standardURL,
-            JSON.stringify({ name }), { headers: this.headers })
+            JSON.stringify({ name, color }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Standard)
             .catch(this.handleError);
@@ -35,9 +35,9 @@ export class StandardService {
 
     editStandard(
         idStandard: string,
-        name: string): Promise<Standard> {
+        name: string, color: string): Promise<Standard> {
         return this.http.patch(this.standardURL + '/' + idStandard,
-            JSON.stringify({ name }), { headers: this.headers })
+            JSON.stringify({ name, color }), { headers: this.headers })
             .toPromise()
             .then(response => response.json().obj as Standard)
             .catch(this.handleError);

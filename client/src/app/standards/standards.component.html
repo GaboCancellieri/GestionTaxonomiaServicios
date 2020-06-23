@@ -40,7 +40,12 @@
                                     <ng-template pTemplate="body" let-standard let-columns="columns">
                                         <tr [pSelectableRow]="standard">
                                             <td *ngFor="let col of columns">
-                                                {{standard[col.field]}}                                            
+                                                <div *ngIf="standard[col.field] && col.field == 'name'">
+                                                    {{standard[col.field]}}                                            
+                                                </div>
+                                                <div *ngIf="standard[col.field] && col.field == 'color'" [ngStyle]="{'color': standard[col.field]}">
+                                                    <i class="fas fa-square fa-2x"></i> &nbsp;&nbsp; <strong>{{standard[col.field]}}</strong>
+                                                </div>
                                             </td>
                                         </tr>
                                     </ng-template>
@@ -106,6 +111,7 @@
                 <form name="form"
                     (ngSubmit)="f.form.valid 
                     && model.name
+                    && color !== '#616161'
                     && addStandard(f);"
                     #f="ngForm" novalidate>
                     <div class="modal-body">
@@ -114,6 +120,15 @@
                             <input type="text" class="form-control" name="name" [(ngModel)]="model.name"
                                 #name="ngModel" autocomplete="off" required />
                             <p-message *ngIf="f.submitted && !model.name" severity="error" text="Required field."></p-message>
+                        </div>
+
+                        <div class="form-group required">
+                            <label class="control-label" for="name">Color:</label> <br>
+                            <p-colorPicker [(ngModel)]="color" name="color"></p-colorPicker>
+                            <p style="margin-top:.5em">Selected Color: 
+                                <span [ngStyle]="{'color':color}">{{color}}</span>
+                            </p>
+                            <p-message *ngIf="f.submitted && color === '#616161'" severity="error" text="You must change this color."></p-message>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -145,13 +160,21 @@
                     </button>
                 </div>
                 <form name="form" (ngSubmit)="f.form.valid 
-                && selectedStandard.name && editStandard(f);" #f="ngForm" novalidate>
+                && selectedStandard.name && selectedStandard.color !== '#616161' && editStandard(f);" #f="ngForm" novalidate>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nombreStandard">Name:</label>
                             <input type="text" class="form-control" name="nameStandard" [(ngModel)]="selectedStandard.name"
                                 #nameStandard="ngModel" autocomplete="off" required />
                             <p-message *ngIf="f.submitted && !selectedStandard.name" severity="error" text="Required field."></p-message>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="name">Color:</label> <br>
+                            <p-colorPicker [(ngModel)]="selectedStandard.color" name="color"></p-colorPicker>
+                            <p style="margin-top:.5em">Selected Color: 
+                                <span [ngStyle]="{'color': selectedStandard.color}">{{selectedStandard.color}}</span>
+                            </p>
+                            <p-message *ngIf="f.submitted && !selectedStandard.color !== '#616161'" severity="error" text="You must change this color."></p-message>
                         </div>
                     </div>
                     <div class="modal-footer">

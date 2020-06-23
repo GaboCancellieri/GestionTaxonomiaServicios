@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                             <p-table #dt [columns]="colsUsuarios" [value]="usuarios" selectionMode="single"
-                            [(selection)]="selectedUser"  [paginator]="true" [rows]="12" (onRowSelect)="onRowSelect()">
+                            [(selection)]="selectedUser"  [paginator]="true" [rows]="12">
                             <ng-template pTemplate="caption">
                                 <div style="text-align: right">
                                     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -126,14 +126,14 @@
                         <label class="control-label" for="name">First name:</label>
                         <input type="text" class="form-control" name="name" [(ngModel)]="model.nombre"
                             #name="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
-                        <p-message *ngIf="f.submitted && !nombre" severity="error" text="Campo Obligatorio."></p-message>
+                        <p-message *ngIf="f.submitted && !model.nombre" severity="error" text="Campo Obligatorio."></p-message>
                     </div>
 
                     <div class="form-group required">
                         <label class="control-label" for="ape">Last name:</label>
                         <input type="text" class="form-control" name="ape" [(ngModel)]="model.apellido"
                             #ape="ngModel" autocomplete="off" required (ngModelChange)="generarUsername()"/>
-                        <p-message *ngIf="f.submitted && !apellido" severity="error"
+                        <p-message *ngIf="f.submitted && !model.apellido" severity="error"
                             text="Campo Obligatorio."></p-message>
                     </div>
 
@@ -147,7 +147,7 @@
                         <label class="control-label" for="pass">Password:</label>
                         <input type="password" class="form-control" name="pass" [(ngModel)]="model.password"
                             #pass="ngModel" autocomplete="off" required />
-                        <p-message *ngIf="f.submitted && !password" severity="error"
+                        <p-message *ngIf="f.submitted && !model.password" severity="error"
                             text="Campo Obligatorio."></p-message>
 
                     </div>

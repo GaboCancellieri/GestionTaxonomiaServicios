@@ -26,6 +26,7 @@ import { HierarchicalTreeService, MindMapService, RadialTreeService, ComplexHier
 import { DataBindingService, SnappingService, PrintAndExportService, BpmnDiagramsService } from '@syncfusion/ej2-angular-diagrams';
 import { SymmetricLayoutService, ConnectorBridgingService, UndoRedoService, LayoutAnimationService } from '@syncfusion/ej2-angular-diagrams';
 import { DiagramContextMenuService, ConnectorEditingService } from '@syncfusion/ej2-angular-diagrams';
+import {ColorPickerModule} from 'primeng/colorpicker';
 
 // COMPONENTES
 import { AppComponent } from './app.component';
@@ -94,7 +95,8 @@ import { ExploreService } from './explore/explore.service';
     TreeModule,
     OrganizationChartModule,
     DiagramModule,
-    InputTextModule
+    InputTextModule,
+    ColorPickerModule
   ],
   providers: [
     AuthenticationService,

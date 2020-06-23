@@ -26,10 +26,15 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-domain let-columns="columns">
+                <ng-template pTemplate="body" let-result let-columns="columns">
                     <tr>
                         <td *ngFor="let col of columns">
-                            {{domain[col.field]}}                                            
+                            <div *ngIf="result[col.field] && col.field !== 'value'">
+                                {{result[col.field]}}             
+                            </div>     
+                            <div *ngIf="result[col.field] && col.field == 'value'">
+                                {{result[col.field]}}%                                            
+                            </div>                                      
                         </td>
                     </tr>
                 </ng-template>

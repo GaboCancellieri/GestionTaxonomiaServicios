@@ -65,7 +65,6 @@ export class UsuariosComponent implements OnInit {
 
     onRowSelect(event) {
         this.usuarioEdit = true;
-        this.model.password = this.selectedUser.password;
         if (!this.initializedTablePermissions) {
             this.initializedTablePermissions = true;
         }

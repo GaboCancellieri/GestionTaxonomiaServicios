@@ -21,7 +21,10 @@ export class ExploreComponent implements OnInit {
 
     ngOnInit() {
         this.cols = [
-            { field: 'name', header: 'Name' },
+            { field: 'service', header: 'Service' },
+            { field: 'domain', header: 'Domain' },
+            { field: 'standard', header: 'Standard' },
+            { field: 'layer', header: 'Layer' },
             { field: 'value', header: 'Value' },
           ];
     }
@@ -31,6 +34,7 @@ export class ExploreComponent implements OnInit {
         this.exploreService.buscar(this.busqueda, selectedMethod)
         .then(results => {
             this.results = results;
+            console.log(results);
         });
     }
 }
